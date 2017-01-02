@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/ab_options"
+        android:title="@string/menu_options"
+        android:checkable="false" />
+
+    <item android:id="@+id/ab_search"
+        android:title="@string/menu_search"
+        android:icon="@android:drawable/ic_search_category_default"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <group
+        android:id="@+id/groupAdmin"
+        android:visible="true">
+        <item
+            android:id="@+id/ab_add"
+            android:title="@string/menu_add_contact"
+            app:showAsAction="ifRoom" />
+    </group>
+
+</menu>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "15109174079",
+    "firebase_url": "https://corporatephonebook-9cff6.firebaseio.com",
+    "project_id": "corporatephonebook-9cff6",
+    "storage_bucket": "corporatephonebook-9cff6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15109174079:android:197d13f4125cf721",
+        "android_client_info": {
+          "package_name": "com.example.gek.pb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "15109174079-l37v6g7f20nn6fj63pldvunhgakhvd3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gek.pb",
+            "certificate_hash": "2A78BEBC1B15D09F589443BEC93C10F0389BF359"
+          }
+        },
+        {
+          "client_id": "15109174079-64rqdhppknelajvgs186r1vgg998a1g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDZQFFR0tXp168jm4cu_0XaQwdZIAUScQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "15109174079-64rqdhppknelajvgs186r1vgg998a1g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

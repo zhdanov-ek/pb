@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">pb</string>
+
+    <string name="hint_name">Name</string>
+    <string name="hint_position">Position</string>
+    <string name="hint_phone">Phone number</string>
+    <string name="hint_email">Email address</string>
+    <string name="hint_ok">OK</string>
+
+    <string name="menu_add_contact">Add contact</string>
+    <string name="menu_options">Options</string>
+    <string name="menu_search">Search</string>
+</resources>
