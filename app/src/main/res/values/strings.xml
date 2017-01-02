@@ -6,8 +6,14 @@
     <string name="hint_phone">Phone number</string>
     <string name="hint_email">Email address</string>
     <string name="hint_ok">OK</string>
+    <string name="hint_description">Description</string>
 
     <string name="menu_add_contact">Add contact</string>
+    <string name="menu_list_users">List users</string>
     <string name="menu_options">Options</string>
     <string name="menu_search">Search</string>
+
+    <string name="mes_no_records">No records in the base</string>
+
+
 </resources>

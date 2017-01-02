@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     Contact contact = child.getValue(Contact.class);
                     contacts.add(contact);
                     Log.d(TAG, "onDataChange: " + contact.getName() + " - " + contact.getPhone() + "\n");
+                }
+                if (contacts.size() == 0) {
+                    Toast.makeText(ctx, R.string.mes_no_records, Toast.LENGTH_LONG).show();
                 }
                 contactsAdapter = new ContactsAdapter(ctx, contacts);
                 rv.setAdapter(contactsAdapter);
@@ -134,8 +138,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.ab_add:
-                    startActivity(new Intent(this, ContactEditActivity.class));
+                startActivity(new Intent(this, ContactEditActivity.class));
                 break;
+            case R.id.ab_users:
+                startActivity(new Intent(this, UsersActivity.class));
             default:
                 break;
         }
