@@ -73,7 +73,7 @@ public class UsersActivity extends AppCompatActivity {
                 if (users.size() == 0) {
                     Toast.makeText(ctx, R.string.mes_no_records, Toast.LENGTH_LONG).show();
                 }
-                usersAdapter = new UsersAdapter(ctx, users);
+                usersAdapter = new UsersAdapter(ctx, users, getSupportFragmentManager());
                 rv.setAdapter(usersAdapter);
             }
 

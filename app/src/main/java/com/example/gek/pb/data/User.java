@@ -7,6 +7,17 @@ package com.example.gek.pb.data;
 public class User {
     private String email;
     private String description;
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+
 
     public User() { }
 
