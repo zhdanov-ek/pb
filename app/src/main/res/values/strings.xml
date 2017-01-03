@@ -6,6 +6,7 @@
     <string name="hint_phone">Phone number</string>
     <string name="hint_email">Email address</string>
     <string name="hint_ok">OK</string>
+    <string name="hint_cancel">CANCEL</string>
     <string name="hint_description">Description</string>
 
     <string name="menu_add_contact">Add contact</string>

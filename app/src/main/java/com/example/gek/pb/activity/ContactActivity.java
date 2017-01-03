@@ -1,4 +1,4 @@
-package com.example.gek.pb;
+package com.example.gek.pb.activity;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
@@ -9,16 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ContactEditActivity extends AppCompatActivity implements View.OnClickListener{
-
-    public static final String MODE = "edit_mode";
-    public static final int MODE_NEW = 0;
-    public static final int MODE_EDIT = 1;
+public class ContactActivity extends AppCompatActivity implements View.OnClickListener{
 
     Button btnOk;
     ImageView ivPhoto;
@@ -33,7 +30,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_edit);
+        setContentView(R.layout.activity_contact);
 
         db = FirebaseDatabase.getInstance().getReference();
 
@@ -92,7 +89,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         snackbar.setAction(R.string.hint_ok, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), ContactEditActivity.class));
+                startActivity(new Intent(getBaseContext(), ContactActivity.class));
             }
         });
         snackbar.show();

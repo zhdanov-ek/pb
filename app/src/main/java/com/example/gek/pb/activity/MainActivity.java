@@ -1,4 +1,4 @@
-package com.example.gek.pb;
+package com.example.gek.pb.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
 import com.example.gek.pb.data.ContactsAdapter;
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.ab_add:
-                startActivity(new Intent(this, ContactEditActivity.class));
+                startActivity(new Intent(this, ContactActivity.class));
                 break;
             case R.id.ab_users:
                 startActivity(new Intent(this, UsersActivity.class));
