@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_list_height"
     android:layout_gravity="center"
-    card_view:cardCornerRadius="2dp">
+    android:layout_marginLeft="@dimen/item_list_layout_margin"
+    android:layout_marginRight="@dimen/item_list_layout_margin"
+    android:layout_marginTop="@dimen/item_list_layout_margin"
+    card_view:cardCornerRadius="@dimen/item_list_corner_radius">
 
     <LinearLayout
         android:layout_width="match_parent"

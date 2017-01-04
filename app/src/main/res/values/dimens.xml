@@ -9,6 +9,8 @@
     <dimen name="item_list_height">80dp</dimen>
     <dimen name="item_list_photo_margin">5dp</dimen>
     <dimen name="item_list_padding">5dp</dimen>
+    <dimen name="item_list_layout_margin">5dp</dimen>
+    <dimen name="item_list_corner_radius">3dp</dimen>
 
     <dimen name="font_size_small">12sp</dimen>
     <dimen name="font_size_middle">16sp</dimen>
