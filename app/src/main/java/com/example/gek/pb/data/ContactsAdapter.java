@@ -16,11 +16,12 @@ import java.util.ArrayList;
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
     private ArrayList<Contact> listContacts;
     private Context ctx;
-
+    private String pathToImage;
 
     public ContactsAdapter(Context ctx, ArrayList<Contact> listContacts){
         this.listContacts = listContacts;
         this.ctx = ctx;
+        pathToImage = Const.STORAGE + "/" +Const.IMAGE_FOLDER;
     }
 
     // Создаем вью которые заполнят экран и будут обновляться данными при прокрутке
@@ -36,7 +37,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Contact contact = listContacts.get(position);
         holder.tvName.setText(contact.getName());
-        holder.tvPosition.setText(contact.getPosition());
+        String path = "";
+        if (contact.getPhoto().length() > 0) {
+            path = " (" + contact.getPhoto() + ")";
+        }
+
+
+        holder.tvPosition.setText(contact.getPosition() + path);
     }
 
     @Override

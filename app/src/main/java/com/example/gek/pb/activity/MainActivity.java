@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private ContactsAdapter contactsAdapter;
     private Context ctx = this;
 
+    private StorageReference storageRef;
+    private FirebaseStorage storage;
+    private StorageReference folderRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         // Задаем стандартный менеджер макетов
         rv.setLayoutManager(new LinearLayoutManager(this));
 
+        // Получаем ссылку на наше хранилище
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReferenceFromUrl(Const.STORAGE);
+        folderRef = storageRef.child(Const.IMAGE_FOLDER);
 
         // Описываем слушатель, который возвращает в программу весь список данных,
         // которые находятся в child(CHILD_CONTACTS)
