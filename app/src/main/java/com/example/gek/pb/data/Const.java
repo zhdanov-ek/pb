@@ -1,5 +1,8 @@
 package com.example.gek.pb.data;
 
+
+import java.io.File;
+
 /**
  * Created by gek on 02.01.17.
  */
@@ -19,6 +22,14 @@ public class Const {
     public static final int MODE_NEW = 0;
     public static final int MODE_EDIT = 1;
 
+    public static Boolean isFindFile(File fullPath, String fileName) {
+        File path = new File(fullPath, fileName);
+        if (path.exists()){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

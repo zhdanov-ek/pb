@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.gek.pb.R;
 import com.example.gek.pb.dialog.UserDialogFragment;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -27,11 +28,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     private ArrayList<String> emails;
 
 
+
     public UsersAdapter(Context ctx, ArrayList<User> listUsers, FragmentManager fragmentManager){
         this.listUsers = listUsers;
         this.ctx = ctx;
         this.fragmentManager = fragmentManager;
-        this.emails = new ArrayList<>();
+        emails = new ArrayList<>();
         for (User user: listUsers){
             emails.add(user.getEmail());
         }

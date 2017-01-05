@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class UsersActivity extends AppCompatActivity {
@@ -37,6 +38,7 @@ public class UsersActivity extends AppCompatActivity {
     private UsersAdapter usersAdapter;
     private Context ctx = this;
     private FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
