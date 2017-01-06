@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gek.pb.R;
-import com.example.gek.pb.activity.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -66,17 +65,17 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
         // Если указанно фото то ищем его на телефоне или загружаем с хранилища гугл
         String nameFoto = "";
-        if (contact.getPhoto().length() > 0) {
-            nameFoto = "\n" + contact.getPhoto();
-            if (Const.isFindFile(appFolder, contact.getPhoto())){
+        if (contact.getPhotoUrl().length() > 0) {
+            nameFoto = "\n" + contact.getPhotoUrl();
+            if (Const.isFindFile(appFolder, contact.getPhotoUrl())){
                 Picasso.with(ctx)
-                        .load(new File(appFolder, contact.getPhoto()))
+                        .load(new File(appFolder, contact.getPhotoUrl()))
                         .placeholder(R.drawable.person_default)
                         .error(R.drawable.person_default)
                         .into(holder.ivPhoto);
             } else {
 
-                StorageReference loadFile = folderRef.child(contact.getPhoto());
+                StorageReference loadFile = folderRef.child(contact.getPhotoUrl());
 
                 try {
                     File localFile = File.createTempFile ("images", "jpg");

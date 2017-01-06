@@ -3,7 +3,6 @@ package com.example.gek.pb.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -103,38 +102,11 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnOk:
-                saveData();
+                sendToServer();
         }
     }
 
-    private void saveData(){
-        String name = etName.getText().toString();
-        String position = etPosition.getText().toString();
-        String phone = etPhone.getText().toString();
-        String phone2 = etPhone2.getText().toString();
-        String email = etEmail.getText().toString();
 
-        String photo;
-        if (uriPhoto != null) {
-            photo = makePhotoName();
-            sendToServer(uriPhoto);
-        } else {
-            photo = "";
-        }
-
-        Contact newContact = new Contact(name, position, photo, email, phone, phone2);
-        db.child(Const.CHILD_CONTACTS).push().setValue(newContact);
-
-//        showSnackBar();
-
-        etName.setText("");
-        etPosition.setText("");
-        etPhone.setText("");
-        etPhone2.setText("");
-        etEmail.setText("");
-        uriPhoto = null;
-        ivPhoto.setImageResource(R.drawable.person_default);
-    }
 
     private void choosePhoto(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -161,28 +133,54 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void sendToServer(Uri uriImage){
-        progressBar.setVisibility(View.VISIBLE);
-        String fileName = makePhotoName();
-        StorageReference currentImageRef = folderRef.child(fileName);
-        UploadTask uploadTask = currentImageRef.putFile(uriImage);
+    private void sendToServer(){
+        final String name = etName.getText().toString();
+        final String position = etPosition.getText().toString();
+        final String phone = etPhone.getText().toString();
+        final String phone2 = etPhone2.getText().toString();
+        final String email = etEmail.getText().toString();
 
-        // Регистрируем слушатель для контроля загрузки файла на сервер
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(getBaseContext(), "Loading image to server: ERROR", Toast.LENGTH_LONG).show();
-                progressBar.setVisibility(View.GONE);
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+        progressBar.setVisibility(View.VISIBLE);
+        Boolean isHavePhoto = false;
+        if (uriPhoto != null) {
+            isHavePhoto = true;
+        }
+
+        // Сначала грузим фото и после этого записываем контакт с указанием URL на фото
+        if (isHavePhoto) {
+            String photoName = makePhotoName();
+            StorageReference currentImageRef = folderRef.child(photoName);
+            UploadTask uploadTask = currentImageRef.putFile(uriPhoto);
+
+            // Регистрируем слушатель для контроля загрузки файла на сервер
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(getBaseContext(), "Loading image to server: ERROR", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Получаем ссылку на закачанный файл и сохраняем ее в контакте
+                    Uri photoUrl = taskSnapshot.getDownloadUrl();
+                    Contact newContact = new Contact(name, position, photoUrl.toString(), email, phone, phone2);
+                    db.child(Const.CHILD_CONTACTS).push().setValue(newContact);
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+
+        // Если фото нет то просто записываем данные в БД
+        } else {
+            Contact newContact = new Contact(name, position, null, email, phone, phone2);
+            db.child(Const.CHILD_CONTACTS).push().setValue(newContact);
+            progressBar.setVisibility(View.GONE);
+        }
+
+
+
     }
+
 
     /** Формируем имя для фотки из данных пользователя. Убираем нежелательные символы */
     private String makePhotoName(){
@@ -202,15 +200,14 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
+    private void clearValues(){
+        etName.setText("");
+        etPosition.setText("");
+        etPhone.setText("");
+        etPhone2.setText("");
+        etEmail.setText("");
+        uriPhoto = null;
+        ivPhoto.setImageResource(R.drawable.person_default);
+    }
 
-//    private void showSnackBar(){
-//        Snackbar snackbar = Snackbar.make(etEmail, "Add new word?", Snackbar.LENGTH_LONG);
-//        snackbar.setAction(R.string.hint_ok, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getBaseContext(), ContactActivity.class));
-//            }
-//        });
-//        snackbar.show();
-//    }
 }

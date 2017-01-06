@@ -7,7 +7,7 @@ package com.example.gek.pb.data;
 public class Contact {
     private String name;
     private String position;
-    private String photo;
+    private String photoUrl;
     private String email;
     private String phone;
     private String phone2;
@@ -15,10 +15,10 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(String name, String position, String photo, String email, String phone, String phone2) {
+    public Contact(String name, String position, String photoUrl, String email, String phone, String phone2) {
         this.name = name;
         this.position = position;
-        this.photo = photo;
+        this.photoUrl = photoUrl;
         this.email = email;
         this.phone = phone;
         this.phone2 = phone2;
@@ -41,12 +41,12 @@ public class Contact {
         this.position = position;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getEmail() {
