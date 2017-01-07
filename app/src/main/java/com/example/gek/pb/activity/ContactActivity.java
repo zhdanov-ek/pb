@@ -166,6 +166,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
                     Uri photoUrl = taskSnapshot.getDownloadUrl();
                     Contact newContact = new Contact(name, position, photoUrl.toString(), email, phone, phone2);
                     db.child(Const.CHILD_CONTACTS).push().setValue(newContact);
+                    clearValues();
                     progressBar.setVisibility(View.GONE);
                 }
             });
@@ -174,6 +175,7 @@ public class ContactActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             Contact newContact = new Contact(name, position, null, email, phone, phone2);
             db.child(Const.CHILD_CONTACTS).push().setValue(newContact);
+            clearValues();
             progressBar.setVisibility(View.GONE);
         }
 

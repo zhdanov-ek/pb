@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_list_height"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginLeft="@dimen/item_list_layout_margin"
     android:layout_marginRight="@dimen/item_list_layout_margin"
@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -21,11 +21,11 @@
             android:layout_width="@dimen/ava_list_size"
             android:layout_height="@dimen/ava_list_size"
             android:layout_margin="@dimen/item_list_photo_margin"
-            android:background="@drawable/person_default"  />
+            tools:background="@drawable/loading"  />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -46,8 +46,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/info_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </android.support.v7.widget.CardView>
