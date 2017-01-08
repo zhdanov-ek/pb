@@ -17,6 +17,7 @@ public class Const {
     public static final String CHILD_USERS = "users";
 
     public static final String EXTRA_EMAILS = "emails_array";
+    public static final String EXTRA_CONTACT = "contact";
 
     public static final String MODE = "edit_mode";
     public static final int MODE_NEW = 0;

@@ -97,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
     // Указываем как нам формировать меню и описываем виджет SearchView
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
@@ -148,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.ab_add:
-                startActivity(new Intent(this, ContactActivity.class));
+                startActivity(new Intent(this, ContactEditActivity.class));
                 break;
             case R.id.ab_users:
                 startActivity(new Intent(this, UsersActivity.class));

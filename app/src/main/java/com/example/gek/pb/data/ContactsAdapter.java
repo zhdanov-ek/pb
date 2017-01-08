@@ -1,6 +1,7 @@
 package com.example.gek.pb.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
+import com.example.gek.pb.activity.ContactShowActivity;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,7 +41,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         this.listContacts = listContacts;
         this.ctx = ctx;
         pathToImage = Const.STORAGE + "/" +Const.IMAGE_FOLDER;
-//        appFolder = ctx.getFilesDir();
         appFolder = Environment.getExternalStorageDirectory();
 
         defaultPhoto = ctx.getResources().getDrawable(R.drawable.person_default);
@@ -91,16 +93,26 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
      / Он же реализует функцию OnClickListener, что бы не создавать их на каждое поле
      / при прокрутке в onBindViewHolder. Максимум таких холдеров будет на два больше
      / чем вмещается на экране */
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private ImageView ivPhoto;
         private TextView tvName;
         private TextView tvPosition;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             ivPhoto = (ImageView) itemView.findViewById(R.id.ivPhoto);
             tvName = (TextView) itemView.findViewById(R.id.tvName);
             tvPosition = (TextView) itemView.findViewById(R.id.tvPosition);
+        }
+
+        @Override
+        public void onClick(View view) {
+            // изымаем данные по позиции где был клик
+            Contact contact = listContacts.get(getAdapterPosition());
+            Intent detailIntent = new Intent(ctx, ContactShowActivity.class);
+            detailIntent.putExtra(Const.EXTRA_CONTACT, contact);
+            ctx.startActivity(detailIntent);
         }
     }
 }
