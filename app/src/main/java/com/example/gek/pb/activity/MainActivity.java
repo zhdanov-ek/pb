@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     private static final String TAG = "11111";
 
+    // флаг показывающий, что авторизирован админ
+    public static Boolean isAdmin = false;
     private ArrayList<Contact> contacts;
     private RecyclerView rv;
     private ContactsAdapter contactsAdapter;
@@ -47,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //todo authentication
+
+        // по этому значению ограничивается функционал программы в меню
+        isAdmin = true;
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
@@ -101,12 +106,31 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    // Указываем как нам формировать меню и описываем виджет SearchView
+    // Указываем как нам формировать меню в зависимости от того кто авторизирован (юзер/админ)
+    // и описываем виджет SearchView
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-
         MenuItem searchItem = menu.findItem(R.id.ab_search);
+
+        String addContact = getResources().getString(R.string.menu_add_contact);
+        String editContact = getResources().getString(R.string.menu_edit_contact);
+        String listUsers = getResources().getString(R.string.menu_list_users);
+        for (int i = 0; i < menu.size(); i++) {
+            if ((menu.getItem(i).getTitle().toString().contentEquals(addContact)) &&
+                    (!isAdmin)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if ((menu.getItem(i).getTitle().toString().contentEquals(listUsers)) &&
+                    (!isAdmin)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(editContact)) {
+                menu.getItem(i).setVisible(false);
+            }
+        }
+
+
 
         SearchView searchView =(SearchView) MenuItemCompat.getActionView(searchItem);
 

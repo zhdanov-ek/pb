@@ -10,6 +10,7 @@
     <string name="hint_description">Description</string>
 
     <string name="menu_add_contact">Add contact</string>
+    <string name="menu_edit_contact">Edit contact</string>
     <string name="menu_list_users">List users</string>
     <string name="menu_options">Options</string>
     <string name="menu_search">Search</string>

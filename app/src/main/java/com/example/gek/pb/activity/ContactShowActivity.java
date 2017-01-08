@@ -4,6 +4,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,9 @@ public class ContactShowActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_show);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(myToolbar);
 
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         tvName = (TextView) findViewById(R.id.tvName);
@@ -66,10 +70,29 @@ public class ContactShowActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        String addContact = getResources().getString(R.string.menu_add_contact);
+        String editContact = getResources().getString(R.string.menu_edit_contact);
+        String listUsers = getResources().getString(R.string.menu_list_users);
+        String search = getResources().getString(R.string.menu_search);
 
+        for (int i = 0; i < menu.size(); i++) {
+            if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
+                menu.getItem(i).setVisible(false);
+            }
 
+            if (menu.getItem(i).getTitle().toString().contentEquals(search)) {
+                menu.getItem(i).setVisible(false);
+            }
 
+            if (menu.getItem(i).getTitle().toString().contentEquals(listUsers)) {
+                menu.getItem(i).setVisible(false);
+            }
 
-        return super.onCreateOptionsMenu(menu);
+            if ((menu.getItem(i).getTitle().toString().contentEquals(editContact)) &&
+                    (! MainActivity.isAdmin)){
+                menu.getItem(i).setVisible(false);
+            }
+        }
+        return true;
     }
 }

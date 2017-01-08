@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -89,6 +90,25 @@ public class UsersActivity extends AppCompatActivity {
         db.child(Const.CHILD_USERS).addValueEventListener(contactCardListener);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        String addContact = getResources().getString(R.string.menu_add_contact);
+        String listUsers = getResources().getString(R.string.menu_list_users);
+        String editContact = getResources().getString(R.string.menu_edit_contact);
+        for (int i = 0; i < menu.size(); i++) {
+            if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(listUsers)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(editContact)) {
+                menu.getItem(i).setVisible(false);
+            }
+        }
+        return true;
+    }
 
 
     View.OnClickListener fabListener = new View.OnClickListener() {
