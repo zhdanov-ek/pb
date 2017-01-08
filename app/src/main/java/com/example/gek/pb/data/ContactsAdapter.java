@@ -2,28 +2,21 @@ package com.example.gek.pb.data;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
-import com.example.gek.pb.activity.MainActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -69,54 +62,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Contact contact = listContacts.get(position);
 
-        //todo Определится стоит ли грузить фото самому в приложения и обращаться в инет только
-        // если нет их в кеше или возложить все на пикассо или глайд, который также кеширует фото
-
-
-        // Если указанно фото то ищем его на телефоне или загружаем с хранилища гугл
-        String nameFoto = "";
-//        if (contact.getPhotoUrl().length() > 0) {
-            nameFoto = "\n" + contact.getPhotoUrl();
-//            if (Const.isFindFile(appFolder, contact.getPhotoUrl())){
-//                Picasso.with(ctx)
-//                        .load(new File(appFolder, contact.getPhotoUrl()))
-//                        .placeholder(R.drawable.person_default)
-//                        .error(R.drawable.person_default)
-//                        .into(holder.ivPhoto);
-//            } else {
-//
-//                StorageReference loadFile = folderRef.child(contact.getPhotoUrl());
-//
-//                try {
-//                    File localFile = File.createTempFile ("images", "jpg");
-//
-//                    loadFile.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                            // Local temp file has been created
-//                            Log.d(TAG, "onSuccess: ");
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception exception) {
-//                            Log.d(TAG, "onFailure: " + exception);
-//                            // Handle any errors
-//                        }
-//                    });
-//                } catch (IOException e) {
-//                    Log.e(TAG, "onBindViewHolder: ", e);
-//                }
-//
-//            }
-//
-//        }
+        String nameFoto = "\n" + contact.getPhotoUrl();
 
         if ((contact.getPhotoUrl() != null) && (contact.getPhotoUrl().length() > 0)) {
-            Picasso.with(ctx)
-                    .load(Uri.parse(contact.getPhotoUrl().toString()))
+            Glide.with(ctx)
+                    .load(contact.getPhotoUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .placeholder(R.drawable.loading)
                     .error(R.drawable.person_default)
-                    .resizeDimen(R.dimen.ava_list_size, R.dimen.ava_list_size)
                     .into(holder.ivPhoto);
         } else {
             holder.ivPhoto.setBackground(defaultPhoto);
