@@ -30,6 +30,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class ContactEditActivity extends AppCompatActivity implements View.OnClickListener{
 
     ProgressBar progressBar;
@@ -193,19 +196,16 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
 
         progressBar.setVisibility(View.VISIBLE);
 
-        //
-        Boolean isHavePhoto = false;
-        if (uriPhoto != null) {
-            isHavePhoto = true;
-        }
+        //todo удалить старое фото из БД если его вообще удаляют (добавить кнопку) или меняют
 
-        // Сначала грузим фото и после этого записываем контакт с указанием URL на фото
-        if (isHavePhoto) {
+        // Если выбранно фото с галереи то сначало грузим фото, а потом запишем карточку в БД
+        // Удаляем старое фото если оно было
+        if (uriPhoto != null) {
             String photoName = makePhotoName();
             StorageReference currentImageRef = folderRef.child(photoName);
             UploadTask uploadTask = currentImageRef.putFile(uriPhoto);
 
-            // Регистрируем слушатель для контроля загрузки файла на сервер
+            // Регистрируем слушатель для контроля загрузки файла на сервер.
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
@@ -218,19 +218,31 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                     // Получаем ссылку на закачанный файл и сохраняем ее в контакте
                     Uri photoUrl = taskSnapshot.getDownloadUrl();
                     Contact newContact = new Contact(name, position, photoUrl.toString(), email, phone, phone2);
-                    String key = db.child(Const.CHILD_CONTACTS).push().getKey();
-                    newContact.setKey(key);
-                    db.child(Const.CHILD_CONTACTS).child(key).setValue(newContact);
+                    if (isNewContact){
+                        String key = db.child(Const.CHILD_CONTACTS).push().getKey();
+                        newContact.setKey(key);
+                        db.child(Const.CHILD_CONTACTS).child(key).setValue(newContact);
+                    } else {
+                        String oldKey = oldContact.getKey();
+                        newContact.setKey(oldKey);
+                        db.child(Const.CHILD_CONTACTS).child(oldKey).setValue(newContact);
+                        changedContact = newContact;
+                    }
                     fillValues(null);
                     progressBar.setVisibility(View.GONE);
-
-                    //changedContact = newContact;
+                    if (!isNewContact) {
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra(Const.EXTRA_CONTACT, changedContact);
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
+                    }
                 }
             });
 
-        // Если фото нет то просто записываем данные в БД
+        // Если фото не выбирали то просто делаем запись в БД с изменениями
+        // Удаляем старое фото если его удалил пользователь
         } else {
-            Contact newContact = new Contact(name, position, "", email, phone, phone2);
+            Contact newContact = new Contact(name, position, oldContact.getPhotoUrl(), email, phone, phone2);
             if (isNewContact){
                 String newKey = db.child(Const.CHILD_CONTACTS).push().getKey();
                 newContact.setKey(newKey);
@@ -241,7 +253,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 db.child(Const.CHILD_CONTACTS).child(oldKey).setValue(newContact);
                 changedContact = newContact;
             }
-
             fillValues(null);
             progressBar.setVisibility(View.GONE);
             if (!isNewContact) {
@@ -251,15 +262,14 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 finish();
             }
         }
-
-
     }
 
 
     /** Формируем имя для фотки из данных пользователя. Убираем нежелательные символы */
     private String makePhotoName(){
+        String time = Calendar.getInstance().getTime().toString();
         String name =   etName.getText().toString() +
-                        etPhone.getText().toString();
+                        time;
         name = name.replace(".", "");
         name = name.replace("@", "");
         name = name.replace(" ", "");

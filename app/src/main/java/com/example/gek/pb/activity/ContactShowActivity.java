@@ -102,6 +102,8 @@ public class ContactShowActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    // обновляем карточку если ее успешно отредактировали
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((data != null) && (requestCode == Const.REQUEST_EDIT_CONTACT) && (resultCode == RESULT_OK)){
