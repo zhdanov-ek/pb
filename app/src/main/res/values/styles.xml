@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="icon_simple">
+        <item name="android:layout_marginRight">@dimen/activity_padding</item>
+        <item name="android:layout_width">@dimen/icon_simple_size</item>
+        <item name="android:layout_height">@dimen/icon_simple_size</item>
+    </style>
+
 </resources>

@@ -17,8 +17,6 @@ public class User {
         this.key = key;
     }
 
-
-
     public User() { }
 
     public User(String email, String description) {

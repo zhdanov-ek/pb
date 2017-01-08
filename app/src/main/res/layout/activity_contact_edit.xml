@@ -1,109 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.gek.pb.activity.ContactEditActivity"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    tools:context="com.example.gek.pb.activity.ContactEditActivity">
     <!-- Размещаем тулбар, который наполним уже в коде с помощью отдельного шаблона  -->
     <include layout="@layout/toolbar" />
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true" />
-    <LinearLayout
-        android:id="@+id/activity_contact_edit"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ivPhoto"
-            android:layout_width="@dimen/ava_contact_size"
-            android:layout_height="@dimen/ava_contact_size"
-            android:background="@drawable/person_default" />
-
-        <android.support.design.widget.TextInputLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/etName"
-                android:maxLength="50"
-                android:layout_width="match_parent"
-                android:textSize="@dimen/font_size_middle"
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_name" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/etPosition"
-                android:maxLength="70"
-                android:textSize="@dimen/font_size_middle"
+            <LinearLayout
+                android:id="@+id/activity_contact_edit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_position" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_padding">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left">
 
-            <EditText
-                android:id="@+id/etPhone"
-                android:textSize="@dimen/font_size_middle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_phone"
-                android:maxLength="15"
-                android:inputType="phone" />
-        </android.support.design.widget.TextInputLayout>
+                    <ImageView
+                        style="@style/icon_simple"
+                        android:src="@drawable/ic_photo" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/etLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/ivPhoto"
+                        android:layout_width="@dimen/ava_contact_size"
+                        android:layout_height="@dimen/ava_contact_size"
+                        android:background="@drawable/person_default" />
+                </LinearLayout>
 
-            <EditText
-                android:id="@+id/etPhone2"
-                android:textSize="@dimen/font_size_middle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_phone"
-                android:maxLength="15"
-                android:inputType="phone" />
-        </android.support.design.widget.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                    <ImageView
+                        style="@style/icon_simple"
+                        android:src="@drawable/ic_person" />
 
-            <EditText
-                android:id="@+id/etEmail"
-                android:textSize="@dimen/font_size_middle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_email"
-                android:maxLength="50"
-                android:inputType="textEmailAddress" />
-        </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnOk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/hint_ok"
-            android:enabled="false"/>
+                        <EditText
+                            android:id="@+id/etName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_name"
+                            android:maxLength="50"
+                            android:textSize="@dimen/font_size_middle" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
 
+                    <ImageView
+                        style="@style/icon_simple"
+                        android:src="@drawable/ic_position" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etPosition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_position"
+                            android:maxLength="70"
+                            android:textSize="@dimen/font_size_middle" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        style="@style/icon_simple"
+                        android:src="@drawable/ic_phone" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_phone"
+                            android:inputType="phone"
+                            android:maxLength="15"
+                            android:textSize="@dimen/font_size_middle" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        style="@style/icon_simple"
+                        android:src="@drawable/ic_phone" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/etLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etPhone2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_phone"
+                            android:inputType="phone"
+                            android:maxLength="15"
+                            android:textSize="@dimen/font_size_middle" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        style="@style/icon_simple"
+                        android:src="@drawable/ic_email" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_email"
+                            android:inputType="textEmailAddress"
+                            android:maxLength="50"
+                            android:textSize="@dimen/font_size_middle" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnOk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/hint_ok" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 </LinearLayout>
+

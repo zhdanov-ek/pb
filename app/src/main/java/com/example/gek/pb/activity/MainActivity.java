@@ -176,7 +176,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.ab_add:
-                startActivity(new Intent(this, ContactEditActivity.class));
+                Intent addContactIntent = new Intent(this, ContactEditActivity.class);
+                addContactIntent.putExtra(Const.MODE, Const.MODE_NEW);
+                startActivity(addContactIntent);
                 break;
             case R.id.ab_users:
                 startActivity(new Intent(this, UsersActivity.class));

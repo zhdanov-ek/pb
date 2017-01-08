@@ -23,14 +23,6 @@ public class Const {
     public static final int MODE_NEW = 0;
     public static final int MODE_EDIT = 1;
 
-    public static Boolean isFindFile(File fullPath, String fileName) {
-        File path = new File(fullPath, fileName);
-        if (path.exists()){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    public static final int REQUEST_EDIT_CONTACT = 1;
 
 }

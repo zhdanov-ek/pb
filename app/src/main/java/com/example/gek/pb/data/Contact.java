@@ -14,11 +14,13 @@ public class Contact implements Parcelable {
     private String email;
     private String phone;
     private String phone2;
+    private String key;
 
     public Contact() {
     }
 
-    public Contact(String name, String position, String photoUrl, String email, String phone, String phone2) {
+    public Contact(String name, String position, String photoUrl,
+                   String email, String phone, String phone2) {
         this.name = name;
         this.position = position;
         this.photoUrl = photoUrl;
@@ -76,6 +78,13 @@ public class Contact implements Parcelable {
         this.phone2 = phone2;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     @Override
     public int describeContents() {
@@ -90,6 +99,7 @@ public class Contact implements Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.phone);
         dest.writeString(this.phone2);
+        dest.writeString(this.key);
     }
 
     protected Contact(Parcel in) {
@@ -99,6 +109,7 @@ public class Contact implements Parcelable {
         this.email = in.readString();
         this.phone = in.readString();
         this.phone2 = in.readString();
+        this.key = in.readString();
     }
 
     public static final Parcelable.Creator<Contact> CREATOR = new Parcelable.Creator<Contact>() {

@@ -1,14 +1,11 @@
 package com.example.gek.pb.activity;
 
-import android.support.v4.view.MenuItemCompat;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +19,9 @@ public class ContactShowActivity extends AppCompatActivity {
 
     ImageView ivPhoto;
     TextView tvName, tvPosition, tvPhone, tvPhone2, tvEmail;
-    Button btnCancel;
-    Contact oldContact;
+    Contact openContact;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,32 +37,27 @@ public class ContactShowActivity extends AppCompatActivity {
         tvPhone = (TextView) findViewById(R.id.tvPhone);
         tvPhone2 = (TextView) findViewById(R.id.tvPhone2);
         tvEmail = (TextView) findViewById(R.id.tvEmail);
-        btnCancel = (Button) findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
-        oldContact = getIntent().getParcelableExtra(Const.EXTRA_CONTACT);
+        openContact = getIntent().getParcelableExtra(Const.EXTRA_CONTACT);
+        fillValues(openContact);
+    }
 
-        if ((oldContact.getPhotoUrl() != null) && (oldContact.getPhotoUrl().length() > 0)) {
+    private void fillValues(Contact contact){
+        if (contact.getPhotoUrl().length() > 0){
             Glide.with(this)
-                    .load(oldContact.getPhotoUrl())
+                    .load(contact.getPhotoUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .placeholder(R.drawable.loading)
                     .error(R.drawable.person_default)
                     .into(ivPhoto);
         } else {
-            ivPhoto.setBackground(getResources().getDrawable(R.drawable.person_default));
+            ivPhoto.setImageResource(R.drawable.person_default);
         }
-
-        tvName.setText(oldContact.getName());
-        tvPosition.setText(oldContact.getPosition());
-        tvPhone.setText(oldContact.getPhone());
-        tvPhone2.setText(oldContact.getPhone2());
-        tvEmail.setText(oldContact.getEmail());
+        tvName.setText(contact.getName());
+        tvPosition.setText(contact.getPosition());
+        tvPhone.setText(contact.getPhone());
+        tvPhone2.setText(contact.getPhone2());
+        tvEmail.setText(contact.getEmail());
     }
 
     @Override
@@ -94,5 +87,26 @@ public class ContactShowActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ab_edit:
+                Intent editContactIntent = new Intent(this, ContactEditActivity.class);
+                editContactIntent.putExtra(Const.MODE, Const.MODE_EDIT);
+                editContactIntent.putExtra(Const.EXTRA_CONTACT, openContact);
+                startActivityForResult(editContactIntent, Const.REQUEST_EDIT_CONTACT);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((data != null) && (requestCode == Const.REQUEST_EDIT_CONTACT) && (resultCode == RESULT_OK)){
+            openContact = data.getParcelableExtra(Const.EXTRA_CONTACT);
+            fillValues(openContact);
+        }
     }
 }

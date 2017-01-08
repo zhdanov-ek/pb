@@ -78,7 +78,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         }
 
         holder.tvName.setText(contact.getName());
-        holder.tvPosition.setText(contact.getPosition() + nameFoto);
+        holder.tvPosition.setText(contact.getPosition());
     }
 
     @Override
