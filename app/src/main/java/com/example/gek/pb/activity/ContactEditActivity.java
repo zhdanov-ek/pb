@@ -48,8 +48,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference db;
     private static final int REQUEST_LOAD_IMG = 1;
 
-    private StorageReference storageRef;
-    private FirebaseStorage storage;
+
     private StorageReference folderRef;
 
     private Uri uriPhoto;                         // тут хранится выбранная картинка с галереи
@@ -69,9 +68,8 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_contact_edit);
 
         // Получаем ссылку на наше хранилище
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl(Const.STORAGE);
-        folderRef = storageRef.child(Const.IMAGE_FOLDER);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        folderRef = storage.getReferenceFromUrl(Const.STORAGE).child(Const.IMAGE_FOLDER);
 
         db = FirebaseDatabase.getInstance().getReference();
 
@@ -195,7 +193,8 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 Uri uri = data.getData();
                 ivPhoto.setImageURI(uri);
                 uriPhoto = uri;
-                if (oldContact.getPhotoName().length() > 0) {
+
+                if ((!isNewContact) && (oldContact.getPhotoName().length() > 0)) {
                     isNeedRemovePhoto = true;
                 }
                 btnRemovePhoto.setVisibility(View.VISIBLE);
