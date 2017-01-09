@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         String addContact = getResources().getString(R.string.menu_add_contact);
         String editContact = getResources().getString(R.string.menu_edit_contact);
+        String removeContact = getResources().getString(R.string.menu_remove_contact);
         String listUsers = getResources().getString(R.string.menu_list_users);
         for (int i = 0; i < menu.size(); i++) {
             if ((menu.getItem(i).getTitle().toString().contentEquals(addContact)) &&
@@ -126,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
                 menu.getItem(i).setVisible(false);
             }
             if (menu.getItem(i).getTitle().toString().contentEquals(editContact)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(removeContact)) {
                 menu.getItem(i).setVisible(false);
             }
         }

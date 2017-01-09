@@ -1,6 +1,9 @@
 package com.example.gek.pb.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +17,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ContactShowActivity extends AppCompatActivity {
 
@@ -65,6 +72,7 @@ public class ContactShowActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
         String addContact = getResources().getString(R.string.menu_add_contact);
         String editContact = getResources().getString(R.string.menu_edit_contact);
+        String removeContact = getResources().getString(R.string.menu_remove_contact);
         String listUsers = getResources().getString(R.string.menu_list_users);
         String search = getResources().getString(R.string.menu_search);
 
@@ -85,6 +93,10 @@ public class ContactShowActivity extends AppCompatActivity {
                     (! MainActivity.isAdmin)){
                 menu.getItem(i).setVisible(false);
             }
+            if ((menu.getItem(i).getTitle().toString().contentEquals(removeContact)) &&
+                    (! MainActivity.isAdmin)){
+                menu.getItem(i).setVisible(false);
+            }
         }
         return true;
     }
@@ -98,8 +110,45 @@ public class ContactShowActivity extends AppCompatActivity {
                 editContactIntent.putExtra(Const.EXTRA_CONTACT, openContact);
                 startActivityForResult(editContactIntent, Const.REQUEST_EDIT_CONTACT);
                 break;
+            case R.id.ab_remove:
+                removeContact();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /** Удаление контакта из базы и фото с хранилища */
+    private void removeContact(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.menu_remove_contact);
+        builder.setIcon(R.drawable.ic_warning);
+        String message = getResources().getString(R.string.confirm_remove_contact);
+        builder.setMessage(message + "\n" + openContact.getName());
+        builder.setCancelable(true);
+        builder.setNegativeButton(R.string.hint_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.setPositiveButton(R.string.hint_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //todo повесить лисенеры на отслеживание успешного и не успешного удаления записи
+
+                // Получаем ссылку на наше хранилище и удаляем фото по названию
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl(Const.STORAGE);
+                if (openContact.getPhotoUrl().length() > 0){
+                    storageRef.child(Const.IMAGE_FOLDER).child(openContact.getPhotoName()).delete();
+                }
+
+                // Получаем ссылку на базу данных и удаляем контакт по ключу загруженного контакта
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                db.child(Const.CHILD_CONTACTS).child(openContact.getKey()).removeValue();
+                finish();
+            }
+        });
+        builder.show();
     }
 
 

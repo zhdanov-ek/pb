@@ -11,6 +11,7 @@ public class Contact implements Parcelable {
     private String name;
     private String position;
     private String photoUrl;
+    private String photoName;
     private String email;
     private String phone;
     private String phone2;
@@ -19,10 +20,11 @@ public class Contact implements Parcelable {
     public Contact() {
     }
 
-    public Contact(String name, String position, String photoUrl,
+    public Contact(String name, String position, String photoName, String photoUrl,
                    String email, String phone, String phone2) {
         this.name = name;
         this.position = position;
+        this.photoName = photoName;
         this.photoUrl = photoUrl;
         this.email = email;
         this.phone = phone;
@@ -44,6 +46,14 @@ public class Contact implements Parcelable {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getPhotoName() {
+        return photoName;
+    }
+
+    public void setPhotoName(String photoName) {
+        this.photoName = photoName;
     }
 
     public String getPhotoUrl() {
@@ -95,6 +105,7 @@ public class Contact implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
         dest.writeString(this.position);
+        dest.writeString(this.photoName);
         dest.writeString(this.photoUrl);
         dest.writeString(this.email);
         dest.writeString(this.phone);
@@ -105,6 +116,7 @@ public class Contact implements Parcelable {
     protected Contact(Parcel in) {
         this.name = in.readString();
         this.position = in.readString();
+        this.photoName = in.readString();
         this.photoUrl = in.readString();
         this.email = in.readString();
         this.phone = in.readString();
@@ -123,4 +135,5 @@ public class Contact implements Parcelable {
             return new Contact[size];
         }
     };
+
 }

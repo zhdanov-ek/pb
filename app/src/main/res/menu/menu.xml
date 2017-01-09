@@ -27,6 +27,11 @@
             app:showAsAction="never" />
 
         <item
+            android:id="@+id/ab_remove"
+            android:title="@string/menu_remove_contact"
+            app:showAsAction="never" />
+
+        <item
             android:id="@+id/ab_users"
             android:title="@string/menu_list_users"
             app:showAsAction="never" />

@@ -37,6 +37,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
 
     ProgressBar progressBar;
     Button btnOk;
+    Button btnRemovePhoto;
     ImageView ivPhoto;
     EditText etName;
     EditText etPosition;
@@ -51,8 +52,9 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     private FirebaseStorage storage;
     private StorageReference folderRef;
 
-    private Uri uriPhoto;                   // тут хранится выбранная картинка с галереи
+    private Uri uriPhoto;                         // тут хранится выбранная картинка с галереи
     private Boolean isNewContact = true;
+    private Boolean isNeedRemovePhoto = false;
     private Contact oldContact;
     private Contact changedContact;
 
@@ -91,6 +93,8 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         etPosition.addTextChangedListener(textWatcher);
         etPhone.addTextChangedListener(textWatcher);
 
+        btnRemovePhoto = (Button) findViewById(R.id.btnRemovePhoto);
+        btnRemovePhoto.setOnClickListener(this);
         btnOk = (Button) findViewById(R.id.btnOk);
         btnOk.setOnClickListener(this);
 
@@ -128,6 +132,15 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()){
             case R.id.btnOk:
                 sendToServer();
+                break;
+            case R.id.btnRemovePhoto:
+                if (oldContact.getPhotoName().length() > 0){
+                    isNeedRemovePhoto = true;
+                }
+                uriPhoto = null;
+                ivPhoto.setImageResource(R.drawable.person_default);
+                btnRemovePhoto.setVisibility(View.INVISIBLE);
+                break;
         }
     }
 
@@ -140,6 +153,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
             etEmail.setText("");
             uriPhoto = null;
             ivPhoto.setImageResource(R.drawable.person_default);
+            btnRemovePhoto.setVisibility(View.INVISIBLE);
         } else {
             etName.setText(contact.getName());
             etPosition.setText(contact.getPosition());
@@ -153,12 +167,12 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                         .placeholder(R.drawable.loading)
                         .error(R.drawable.person_default)
                         .into(ivPhoto);
+                btnRemovePhoto.setVisibility(View.VISIBLE);
             } else {
                 ivPhoto.setImageResource(R.drawable.person_default);
             }
         }
     }
-
 
 
     private void choosePhoto(){
@@ -172,6 +186,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+    /** Получаем URI фото с галереи */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -180,6 +195,10 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 Uri uri = data.getData();
                 ivPhoto.setImageURI(uri);
                 uriPhoto = uri;
+                if (oldContact.getPhotoName().length() > 0) {
+                    isNeedRemovePhoto = true;
+                }
+                btnRemovePhoto.setVisibility(View.VISIBLE);
             }
         } else {
             uriPhoto = null;
@@ -201,7 +220,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         // Если выбранно фото с галереи то сначало грузим фото, а потом запишем карточку в БД
         // Удаляем старое фото если оно было
         if (uriPhoto != null) {
-            String photoName = makePhotoName();
+            final String photoName = makePhotoName();
             StorageReference currentImageRef = folderRef.child(photoName);
             UploadTask uploadTask = currentImageRef.putFile(uriPhoto);
 
@@ -217,12 +236,16 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // Получаем ссылку на закачанный файл и сохраняем ее в контакте
                     Uri photoUrl = taskSnapshot.getDownloadUrl();
-                    Contact newContact = new Contact(name, position, photoUrl.toString(), email, phone, phone2);
+                    Contact newContact = new Contact(name, position, photoName, photoUrl.toString(),
+                            email, phone, phone2);
                     if (isNewContact){
                         String key = db.child(Const.CHILD_CONTACTS).push().getKey();
                         newContact.setKey(key);
                         db.child(Const.CHILD_CONTACTS).child(key).setValue(newContact);
                     } else {
+                        if (isNeedRemovePhoto) {
+                            removeOldPhoto(oldContact.getPhotoName());
+                        }
                         String oldKey = oldContact.getKey();
                         newContact.setKey(oldKey);
                         db.child(Const.CHILD_CONTACTS).child(oldKey).setValue(newContact);
@@ -242,25 +265,34 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         // Если фото не выбирали то просто делаем запись в БД с изменениями
         // Удаляем старое фото если его удалил пользователь
         } else {
-            Contact newContact = new Contact(name, position, oldContact.getPhotoUrl(), email, phone, phone2);
+            Contact newContact = new Contact(name, position, "",
+                    "", email, phone, phone2);
             if (isNewContact){
                 String newKey = db.child(Const.CHILD_CONTACTS).push().getKey();
                 newContact.setKey(newKey);
                 db.child(Const.CHILD_CONTACTS).child(newKey).setValue(newContact);
             } else {
+                if (isNeedRemovePhoto){
+                    removeOldPhoto(oldContact.getPhotoName());
+                    newContact.setPhotoName("");
+                    newContact.setPhotoUrl("");
+                } else {
+                    newContact.setPhotoName(oldContact.getPhotoName());
+                    newContact.setPhotoUrl(oldContact.getPhotoUrl());
+                }
                 String oldKey = oldContact.getKey();
                 newContact.setKey(oldKey);
                 db.child(Const.CHILD_CONTACTS).child(oldKey).setValue(newContact);
                 changedContact = newContact;
             }
-            fillValues(null);
             progressBar.setVisibility(View.GONE);
             if (!isNewContact) {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra(Const.EXTRA_CONTACT, changedContact);
                 setResult(RESULT_OK, resultIntent);
-                finish();
+                //todo Toast for add new Contact is need
             }
+            finish();
         }
     }
 
@@ -304,6 +336,15 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
             }
         }
         return true;
+    }
+
+
+    private void removeOldPhoto(String namePhoto){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl(Const.STORAGE);
+        if (namePhoto.length() > 0){
+            storageRef.child(Const.IMAGE_FOLDER).child(namePhoto).delete();
+        }
     }
 
 }

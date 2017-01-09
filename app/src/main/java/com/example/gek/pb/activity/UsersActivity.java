@@ -94,8 +94,10 @@ public class UsersActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         String addContact = getResources().getString(R.string.menu_add_contact);
-        String listUsers = getResources().getString(R.string.menu_list_users);
         String editContact = getResources().getString(R.string.menu_edit_contact);
+        String removeContact = getResources().getString(R.string.menu_remove_contact);
+        String listUsers = getResources().getString(R.string.menu_list_users);
+
         for (int i = 0; i < menu.size(); i++) {
             if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
                 menu.getItem(i).setVisible(false);
@@ -104,6 +106,9 @@ public class UsersActivity extends AppCompatActivity {
                 menu.getItem(i).setVisible(false);
             }
             if (menu.getItem(i).getTitle().toString().contentEquals(editContact)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(removeContact)) {
                 menu.getItem(i).setVisible(false);
             }
         }

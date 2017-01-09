@@ -7,10 +7,13 @@
     <string name="hint_email">Email address</string>
     <string name="hint_ok">OK</string>
     <string name="hint_cancel">CANCEL</string>
+    <string name="hint_remove">REMOVE</string>
     <string name="hint_description">Description</string>
 
     <string name="menu_add_contact">Add contact</string>
     <string name="menu_edit_contact">Edit contact</string>
+    <string name="menu_remove_contact">Remove contact</string>
+    <string name="confirm_remove_contact">Do you want remove contact?</string>
     <string name="menu_list_users">List users</string>
     <string name="menu_options">Options</string>
     <string name="menu_search">Search</string>
