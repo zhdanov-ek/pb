@@ -1,6 +1,7 @@
 package com.example.gek.pb.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -132,7 +133,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 sendToServer();
                 break;
             case R.id.btnRemovePhoto:
-                if (oldContact.getPhotoName().length() > 0){
+                if ((oldContact != null) &&(oldContact.getPhotoName().length() > 0)){
                     isNeedRemovePhoto = true;
                 }
                 uriPhoto = null;
@@ -191,6 +192,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         if (resultCode == RESULT_OK && data != null ) {
             if (requestCode == REQUEST_LOAD_IMG ) {
                 Uri uri = data.getData();
+                ivPhoto.setBackgroundColor(getResources().getColor(R.color.colorBackground));
                 ivPhoto.setImageURI(uri);
                 uriPhoto = uri;
 

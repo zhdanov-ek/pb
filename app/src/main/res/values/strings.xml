@@ -8,6 +8,7 @@
     <string name="hint_ok">OK</string>
     <string name="hint_cancel">CANCEL</string>
     <string name="hint_remove">REMOVE</string>
+    <string name="hint_restore">RESTORE</string>
     <string name="hint_description">Description</string>
 
     <string name="menu_add_contact">Add contact</string>
@@ -18,7 +19,11 @@
     <string name="menu_options">Options</string>
     <string name="menu_search">Search</string>
 
+    <string name="title_edit_user">Edit user</string>
+    <string name="title_add_user">Add new user</string>
+
     <string name="mes_no_records">No records in the base</string>
+    <string name="mes_user_removed">User has been removed</string>
 
 
 </resources>

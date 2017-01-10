@@ -3,8 +3,10 @@ package com.example.gek.pb.dialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -67,15 +69,14 @@ public class UserDialogFragment extends DialogFragment {
             this.email = getArguments().getString("email");
             this.description = getArguments().getString("description");
             this.key = getArguments().getString("key");
-            title = "Edit user: " + email;
+            title = getResources().getString(R.string.title_edit_user);
         } else {
             this.email = "";
             this.description = "";
             this.key = null;
             this.emails = getArguments().getStringArrayList(Const.EXTRA_EMAILS);
-            title = "New user";
+            title = getResources().getString(R.string.title_add_user);
         }
-
 
         // Создаем вью по нашему лаяуту
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -86,12 +87,14 @@ public class UserDialogFragment extends DialogFragment {
         etEmail.setText(email);
         etDescription.setText(description);
         
-        // Строим диалог, добавляя кнопки и пишем обработчик
+        // Если юзер редактируется то добавляем кнопку удаления
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(root)
-                .setTitle(title)
-                .setPositiveButton(R.string.hint_ok, listenerOk)
-                .setNegativeButton(R.string.hint_cancel, new DialogInterface.OnClickListener() {
+        builder.setView(root).setTitle(title);
+        if (mode == Const.MODE_EDIT) {
+            builder.setNeutralButton(R.string.hint_remove, listenerRemove);
+        }
+        builder.setPositiveButton(R.string.hint_ok, listenerOk);
+        builder.setNegativeButton(R.string.hint_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dismiss();
@@ -100,6 +103,23 @@ public class UserDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    // Удаляем юзера с базы и показываем сообщение с возможностью восстановить юзера
+    DialogInterface.OnClickListener listenerRemove = new DialogInterface.OnClickListener(){
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            removeUser(key);
+            Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.rv),
+                    R.string.mes_user_removed,
+                    Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.hint_restore, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveUser(email, description, key);
+                }
+            });
+            snackbar.show();
+        }
+    };
 
     DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener() {
         @Override
@@ -144,6 +164,12 @@ public class UserDialogFragment extends DialogFragment {
             user.setKey(key);
             db.child(Const.CHILD_USERS).child(key).setValue(user);
         }
+    }
+
+    private void removeUser(String key){
+        DatabaseReference db;
+        db = FirebaseDatabase.getInstance().getReference();
+        db.child(Const.CHILD_USERS).child(key).removeValue();
     }
 
 

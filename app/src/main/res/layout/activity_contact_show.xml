@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/ivPhoto"
-            android:layout_width="@dimen/ava_contact_size"
-            android:layout_height="@dimen/ava_contact_size"
+            android:layout_width="@dimen/ava_list_size"
+            android:layout_height="@dimen/ava_list_size"
             tools:src="@drawable/person_default" />
 
 
