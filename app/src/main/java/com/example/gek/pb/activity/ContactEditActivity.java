@@ -103,6 +103,8 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
             isNewContact = false;
             oldContact = getIntent().getParcelableExtra(Const.EXTRA_CONTACT);
             fillValues(oldContact);
+        } else {
+            fillValues(null);
         }
     }
 
