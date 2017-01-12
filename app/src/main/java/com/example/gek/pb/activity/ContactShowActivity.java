@@ -1,16 +1,26 @@
 package com.example.gek.pb.activity;
 
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
+import android.net.Uri;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,20 +34,26 @@ import com.google.firebase.storage.StorageReference;
 
 public class ContactShowActivity extends AppCompatActivity {
 
+    private static final String TAG = "GEK";
     ImageView ivPhoto;
     TextView tvName, tvPosition, tvPhone, tvPhone2, tvEmail;
     Contact openContact;
-
-
+    LinearLayout llPhone, llPhone2, llEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_show);
 
+        // Анимация для всего поля с телефоном и значком при клике
+        final Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
 
+        llPhone = (LinearLayout) findViewById(R.id.llPhone);
+        llPhone2 = (LinearLayout) findViewById(R.id.llPhone2);
+        llEmail = (LinearLayout) findViewById(R.id.llEmail);
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
         tvName = (TextView) findViewById(R.id.tvName);
         tvPosition = (TextView) findViewById(R.id.tvPosition);
@@ -45,8 +61,33 @@ public class ContactShowActivity extends AppCompatActivity {
         tvPhone2 = (TextView) findViewById(R.id.tvPhone2);
         tvEmail = (TextView) findViewById(R.id.tvEmail);
 
+        llPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llPhone.startAnimation(anim);
+                makeCall(tvPhone.getText().toString());
+            }
+        });
+
+        llPhone2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llPhone2.startAnimation(anim);
+                makeCall(tvPhone2.getText().toString());
+            }
+        });
+
+        llEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llEmail.startAnimation(anim);
+                sendEmail(tvName.getText().toString(), tvEmail.getText().toString());
+            }
+        });
+
         openContact = getIntent().getParcelableExtra(Const.EXTRA_CONTACT);
         fillValues(openContact);
+
     }
 
     private void fillValues(Contact contact){
@@ -54,7 +95,6 @@ public class ContactShowActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(contact.getPhotoUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .placeholder(R.drawable.loading)
                     .error(R.drawable.person_default)
                     .into(ivPhoto);
         } else {
@@ -65,6 +105,17 @@ public class ContactShowActivity extends AppCompatActivity {
         tvPhone.setText(contact.getPhone());
         tvPhone2.setText(contact.getPhone2());
         tvEmail.setText(contact.getEmail());
+
+        if (contact.getPhone2().isEmpty()){
+            llPhone2.setVisibility(View.GONE);
+        } else {
+            llPhone2.setVisibility(View.VISIBLE);
+        }
+        if (contact.getEmail().isEmpty()){
+            llEmail.setVisibility(View.GONE);
+        } else {
+            llEmail.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -158,6 +209,35 @@ public class ContactShowActivity extends AppCompatActivity {
         if ((data != null) && (requestCode == Const.REQUEST_EDIT_CONTACT) && (resultCode == RESULT_OK)){
             openContact = data.getParcelableExtra(Const.EXTRA_CONTACT);
             fillValues(openContact);
+        }
+    }
+
+    private void makeCall(String number){
+        try {
+            String uri = "tel:" + number;
+            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(uri));
+            //todo: Надо прописать проверку наличия разрешения на доступ к функциям вызова
+             startActivity(callIntent);
+        } catch (Exception e) {
+            Toast.makeText(getBaseContext(), "Your call has failed...",
+                    Toast.LENGTH_LONG).show();
+            Log.d(TAG, "makeCall: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    private void sendEmail(String name, String email){
+        try {
+            Intent emailIntent = new Intent(Intent.ACTION_VIEW);
+            // Указваем все необходимые данные для написания письма
+            Uri data = Uri.parse("mailto:?subject=" + "&body=" + getResources().getString(R.string.mes_hello)
+                    + ",  " + name + "&to=" + email);
+            emailIntent.setData(data);
+            startActivity(emailIntent);
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Your mail has failed...",
+                    Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 }

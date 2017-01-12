@@ -33,10 +33,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     private static final String TAG = "ContactsAdapter";
 
-    private StorageReference storageRef;
-    private FirebaseStorage storage;
-    private StorageReference folderRef;
-
     public ContactsAdapter(Context ctx, ArrayList<Contact> listContacts){
         this.listContacts = listContacts;
         this.ctx = ctx;
@@ -44,11 +40,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         appFolder = Environment.getExternalStorageDirectory();
 
         defaultPhoto = ctx.getResources().getDrawable(R.drawable.person_default);
-
-        // Получаем ссылку на наше хранилище
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl(Const.STORAGE);
-        folderRef = storageRef.child(Const.IMAGE_FOLDER);
     }
 
     // Создаем вью которые заполнят экран и будут обновляться данными при прокрутке
@@ -63,20 +54,15 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Contact contact = listContacts.get(position);
-
-        String nameFoto = "\n" + contact.getPhotoUrl();
-
         if ((contact.getPhotoUrl() != null) && (contact.getPhotoUrl().length() > 0)) {
             Glide.with(ctx)
                     .load(contact.getPhotoUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .placeholder(R.drawable.loading)
                     .error(R.drawable.person_default)
                     .into(holder.ivPhoto);
         } else {
             holder.ivPhoto.setBackground(defaultPhoto);
         }
-
         holder.tvName.setText(contact.getName());
         holder.tvPosition.setText(contact.getPosition());
     }
@@ -85,8 +71,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public int getItemCount() {
         return listContacts.size();
     }
-
-
 
 
     /** Реализация абстрактного класса ViewHolder, хранящего ссылки на виджеты.

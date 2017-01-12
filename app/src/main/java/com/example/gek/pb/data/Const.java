@@ -1,8 +1,5 @@
 package com.example.gek.pb.data;
 
-
-import java.io.File;
-
 /**
  * Created by gek on 02.01.17.
  */
@@ -24,5 +21,6 @@ public class Const {
     public static final int MODE_EDIT = 1;
 
     public static final int REQUEST_EDIT_CONTACT = 1;
+
 
 }
