@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -51,6 +53,7 @@ public class ContactShowActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
 
+
         llPhone = (LinearLayout) findViewById(R.id.llPhone);
         llPhone2 = (LinearLayout) findViewById(R.id.llPhone2);
         llEmail = (LinearLayout) findViewById(R.id.llEmail);
@@ -90,53 +93,23 @@ public class ContactShowActivity extends AppCompatActivity {
 
     }
 
-    private void fillValues(Contact contact){
-        if (contact.getPhotoUrl().length() > 0){
-            Glide.with(this)
-                    .load(contact.getPhotoUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .error(R.drawable.person_default)
-                    .into(ivPhoto);
-        } else {
-            ivPhoto.setImageResource(R.drawable.person_default);
-        }
-        tvName.setText(contact.getName());
-        tvPosition.setText(contact.getPosition());
-        tvPhone.setText(contact.getPhone());
-        tvPhone2.setText(contact.getPhone2());
-        tvEmail.setText(contact.getEmail());
-
-        if (contact.getPhone2().isEmpty()){
-            llPhone2.setVisibility(View.GONE);
-        } else {
-            llPhone2.setVisibility(View.VISIBLE);
-        }
-        if (contact.getEmail().isEmpty()){
-            llEmail.setVisibility(View.GONE);
-        } else {
-            llEmail.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_contact_show, menu);
+
+        // Находим наш пункт меню и с помощью хелпера MenuItemCompat привязываем наш экшн провайдер
+        MenuItem menuItem = menu.findItem(R.id.ab_share_item);
+        ShareActionProvider shareActionProvider = new ShareActionProvider(this);
+        MenuItemCompat.setActionProvider(menuItem, shareActionProvider);
+        shareActionProvider.setShareIntent(createShareContactIntent());
+
         String addContact = getResources().getString(R.string.menu_add_contact);
         String editContact = getResources().getString(R.string.menu_edit_contact);
         String removeContact = getResources().getString(R.string.menu_remove_contact);
-        String listUsers = getResources().getString(R.string.menu_list_users);
-        String search = getResources().getString(R.string.menu_search);
 
         for (int i = 0; i < menu.size(); i++) {
             if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
-                menu.getItem(i).setVisible(false);
-            }
-
-            if (menu.getItem(i).getTitle().toString().contentEquals(search)) {
-                menu.getItem(i).setVisible(false);
-            }
-
-            if (menu.getItem(i).getTitle().toString().contentEquals(listUsers)) {
                 menu.getItem(i).setVisible(false);
             }
 
@@ -144,12 +117,31 @@ public class ContactShowActivity extends AppCompatActivity {
                     (! MainActivity.isAdmin)){
                 menu.getItem(i).setVisible(false);
             }
+
             if ((menu.getItem(i).getTitle().toString().contentEquals(removeContact)) &&
                     (! MainActivity.isAdmin)){
                 menu.getItem(i).setVisible(false);
             }
         }
         return true;
+    }
+
+    /** Создание интента с текстом текущего контакта для передачи в ShareActionProvider */
+    private Intent createShareContactIntent() {
+        String info = tvName.getText().toString() + "\n" + tvPosition.getText().toString() +
+                "\n" + tvPhone.getText().toString();
+        if (tvPhone2.getText().length() > 0) {
+            info = info + "\n" + tvPhone2.getText().toString();
+        }
+
+        if (tvEmail.getText().length() > 0) {
+            info = info + "\n" + tvEmail.getText().toString();
+        }
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, info);
+        return shareIntent;
     }
 
     @Override
@@ -211,6 +203,37 @@ public class ContactShowActivity extends AppCompatActivity {
             fillValues(openContact);
         }
     }
+
+
+    /** Заполняет поля активити значениями или очищает их */
+    private void fillValues(Contact contact){
+        if (contact.getPhotoUrl().length() > 0){
+            Glide.with(this)
+                    .load(contact.getPhotoUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .error(R.drawable.person_default)
+                    .into(ivPhoto);
+        } else {
+            ivPhoto.setImageResource(R.drawable.person_default);
+        }
+        tvName.setText(contact.getName());
+        tvPosition.setText(contact.getPosition());
+        tvPhone.setText(contact.getPhone());
+        tvPhone2.setText(contact.getPhone2());
+        tvEmail.setText(contact.getEmail());
+
+        if (contact.getPhone2().isEmpty()){
+            llPhone2.setVisibility(View.GONE);
+        } else {
+            llPhone2.setVisibility(View.VISIBLE);
+        }
+        if (contact.getEmail().isEmpty()){
+            llEmail.setVisibility(View.GONE);
+        } else {
+            llEmail.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     private void makeCall(String number){
         try {

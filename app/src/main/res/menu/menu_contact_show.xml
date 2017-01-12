@@ -3,17 +3,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/ab_share_item"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_share"
+        android:actionProviderClass="android.widget.ShareActionProvider" />
+
+
     <item android:id="@+id/ab_options"
         android:title="@string/menu_options"
         android:checkable="false" />
-
-    <item android:id="@+id/ab_search"
-        android:title="@string/menu_search"
-        android:icon="@android:drawable/ic_search_category_default"
-        app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
-
-
 
     <group
         android:id="@+id/groupAdmin"
@@ -24,8 +23,13 @@
             app:showAsAction="never" />
 
         <item
-            android:id="@+id/ab_users"
-            android:title="@string/menu_list_users"
+            android:id="@+id/ab_edit"
+            android:title="@string/menu_edit_contact"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/ab_remove"
+            android:title="@string/menu_remove_contact"
             app:showAsAction="never" />
 
     </group>

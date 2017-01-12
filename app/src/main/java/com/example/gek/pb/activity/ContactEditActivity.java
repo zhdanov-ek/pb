@@ -324,20 +324,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        String addContact = getResources().getString(R.string.menu_add_contact);
-        String listUsers = getResources().getString(R.string.menu_list_users);
-        String editContact = getResources().getString(R.string.menu_edit_contact);
-        for (int i = 0; i < menu.size(); i++) {
-            if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
-                menu.getItem(i).setVisible(false);
-            }
-            if (menu.getItem(i).getTitle().toString().contentEquals(listUsers)) {
-                menu.getItem(i).setVisible(false);
-            }
-            if (menu.getItem(i).getTitle().toString().contentEquals(editContact)) {
-                menu.getItem(i).setVisible(false);
-            }
-        }
         return true;
     }
 

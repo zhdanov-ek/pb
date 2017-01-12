@@ -18,6 +18,7 @@
     <string name="menu_list_users">List users</string>
     <string name="menu_options">Options</string>
     <string name="menu_search">Search</string>
+    <string name="menu_share">Share</string>
 
     <string name="title_edit_user">Edit user</string>
     <string name="title_add_user">Add new user</string>

@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem searchItem = menu.findItem(R.id.ab_search);
 
+        //Скрываем отдельные пункты меню
         String addContact = getResources().getString(R.string.menu_add_contact);
-        String editContact = getResources().getString(R.string.menu_edit_contact);
         String removeContact = getResources().getString(R.string.menu_remove_contact);
         String listUsers = getResources().getString(R.string.menu_list_users);
         for (int i = 0; i < menu.size(); i++) {
@@ -118,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
             }
             if ((menu.getItem(i).getTitle().toString().contentEquals(listUsers)) &&
                     (!isAdmin)) {
-                menu.getItem(i).setVisible(false);
-            }
-            if (menu.getItem(i).getTitle().toString().contentEquals(editContact)) {
                 menu.getItem(i).setVisible(false);
             }
             if (menu.getItem(i).getTitle().toString().contentEquals(removeContact)) {
