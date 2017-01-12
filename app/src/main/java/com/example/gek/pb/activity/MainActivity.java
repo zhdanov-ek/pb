@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         SearchView searchView =(SearchView) MenuItemCompat.getActionView(searchItem);
 
 //        // Отрабатываем смену текста в окне поиска
@@ -152,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-
 
         // По окончанию работы с SearchView отображаем все слова в алфавитном порядке
         // и в меню это отмечаем это в меню

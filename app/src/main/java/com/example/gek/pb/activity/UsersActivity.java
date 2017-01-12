@@ -3,13 +3,16 @@ package com.example.gek.pb.activity;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
@@ -45,6 +49,7 @@ public class UsersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
+
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
@@ -105,6 +110,51 @@ public class UsersActivity extends AppCompatActivity {
                 menu.getItem(i).setVisible(false);
             }
         }
+
+        MenuItem searchItem = menu.findItem(R.id.ab_search);
+        SearchView searchView =(SearchView) MenuItemCompat.getActionView(searchItem);
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Query query = db.child(Const.CHILD_USERS).orderByChild("email").startAt(newText);
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            for (DataSnapshot item: dataSnapshot.getChildren()) {
+                                Log.d(TAG, "onDataChange: " + item.child("email").getValue().toString());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                Log.d(TAG, "onQueryTextChange: " + newText);
+                return false;
+            }
+        });
+
+
+        // По окончанию работы с SearchView отображаем все слова в алфавитном порядке
+        // и в меню это отмечаем это в меню
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+//                MenuItem menuItem = menu.findItem(R.id.ab_sort_abc);
+//                menuItem.setChecked(true);
+                return false;
+            }
+        });
         return true;
     }
 
