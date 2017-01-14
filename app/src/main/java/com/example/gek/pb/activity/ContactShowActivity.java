@@ -29,6 +29,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
+import com.example.gek.pb.helpers.Utils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -114,12 +115,12 @@ public class ContactShowActivity extends AppCompatActivity {
             }
 
             if ((menu.getItem(i).getTitle().toString().contentEquals(editContact)) &&
-                    (! MainActivity.isAdmin)){
+                    (! SignInActivity.isAdmin)){
                 menu.getItem(i).setVisible(false);
             }
 
             if ((menu.getItem(i).getTitle().toString().contentEquals(removeContact)) &&
-                    (! MainActivity.isAdmin)){
+                    (! SignInActivity.isAdmin)){
                 menu.getItem(i).setVisible(false);
             }
         }
@@ -155,6 +156,9 @@ public class ContactShowActivity extends AppCompatActivity {
                 break;
             case R.id.ab_remove:
                 removeContact();
+                break;
+            case R.id.ab_about:
+                Utils.showAbout(this);
                 break;
         }
         return super.onOptionsItemSelected(item);

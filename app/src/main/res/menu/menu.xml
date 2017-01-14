@@ -3,21 +3,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/ab_options"
-        android:title="@string/menu_options"
-        android:checkable="false" />
-
-    <item android:id="@+id/ab_sign_out"
-        android:title="@string/menu_sign_out"
-        android:checkable="false" />
-
     <item android:id="@+id/ab_search"
         android:title="@string/menu_search"
         android:icon="@android:drawable/ic_search_category_default"
         app:showAsAction="always"
         app:actionViewClass="android.support.v7.widget.SearchView" />
-
-
 
     <group
         android:id="@+id/groupAdmin"
@@ -33,5 +23,17 @@
             app:showAsAction="never" />
 
     </group>
+
+    <item android:id="@+id/ab_options"
+        android:title="@string/menu_options"
+        android:checkable="false" />
+
+    <item android:id="@+id/ab_sign_out"
+        android:title="@string/menu_sign_out"
+        android:checkable="false" />
+
+    <item android:id="@+id/ab_about"
+        android:title="@string/menu_about"
+        android:checkable="false" />
 
 </menu>

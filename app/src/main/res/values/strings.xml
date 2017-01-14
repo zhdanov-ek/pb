@@ -19,6 +19,7 @@
     <string name="menu_options">Options</string>
     <string name="menu_sign_out">Sign out</string>
     <string name="menu_search">Search</string>
+    <string name="menu_about">About</string>
     <string name="menu_share">Share</string>
 
     <string name="title_edit_user">Edit user</string>
@@ -29,5 +30,7 @@
     <string name="mes_hello">Hello</string>
     <string name="mes_no_internet">No internet connection!</string>
     <string name="mes_register_admin_account">Please register admin account!</string>
+    <string name="mes_about">Corporate phone book of company You helth</string>
+    <string name="about_user">Current user</string>
 
 </resources>

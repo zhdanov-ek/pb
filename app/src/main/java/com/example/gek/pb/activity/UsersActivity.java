@@ -22,6 +22,7 @@ import com.example.gek.pb.data.User;
 import com.example.gek.pb.data.UsersAdapter;
 
 import com.example.gek.pb.dialog.UserDialogFragment;
+import com.example.gek.pb.helpers.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class UsersActivity extends AppCompatActivity {
@@ -102,11 +102,15 @@ public class UsersActivity extends AppCompatActivity {
         //Скрываем отдельные пункты меню
         String addContact = getResources().getString(R.string.menu_add_contact);
         String listUsers = getResources().getString(R.string.menu_list_users);
+        String signOut = getResources().getString(R.string.menu_sign_out);
         for (int i = 0; i < menu.size(); i++) {
             if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
                 menu.getItem(i).setVisible(false);
             }
             if (menu.getItem(i).getTitle().toString().contentEquals(listUsers)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(signOut)) {
                 menu.getItem(i).setVisible(false);
             }
         }
@@ -158,7 +162,18 @@ public class UsersActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ab_about:
+                Utils.showAbout(this);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+
+    /** Запуск диалога на добавление пользователя */
     View.OnClickListener fabListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
