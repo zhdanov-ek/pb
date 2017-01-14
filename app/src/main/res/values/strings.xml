@@ -27,8 +27,7 @@
     <string name="mes_no_records">No records in the base</string>
     <string name="mes_user_removed">User has been removed</string>
     <string name="mes_hello">Hello</string>
-
-
-
+    <string name="mes_no_internet">No internet connection!</string>
+    <string name="mes_register_admin_account">Please register admin account!</string>
 
 </resources>

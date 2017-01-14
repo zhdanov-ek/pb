@@ -1,15 +1,11 @@
 package com.example.gek.pb.helpers;
 
-import android.app.Activity;
+
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 /**
  * Created by gek on 12.01.2017.

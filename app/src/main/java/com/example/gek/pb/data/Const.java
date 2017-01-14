@@ -12,6 +12,7 @@ public class Const {
     public static final String IMAGE_FOLDER = "images";
     public static final String CHILD_CONTACTS = "contacts";
     public static final String CHILD_USERS = "users";
+    public static final String CHILD_ADMIN = "admin_account";
 
     public static final String EXTRA_EMAILS = "emails_array";
     public static final String EXTRA_CONTACT = "contact";
