@@ -1,19 +1,19 @@
 package com.example.gek.pb.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
+import com.example.gek.pb.helpers.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -32,13 +33,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class ContactEditActivity extends AppCompatActivity implements View.OnClickListener{
 
     ProgressBar progressBar;
     Button btnOk;
-    Button btnRemovePhoto;
+    ImageButton ibtnRemovePhoto;
     ImageView ivPhoto;
     EditText etName;
     EditText etPosition;
@@ -61,12 +61,11 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contact_edit);
 
-        //todo not showing toolbar - FIX THIS
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
 
-        setContentView(R.layout.activity_contact_edit);
 
         // Получаем ссылку на наше хранилище
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -92,10 +91,15 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         etPosition.addTextChangedListener(textWatcher);
         etPhone.addTextChangedListener(textWatcher);
 
-        btnRemovePhoto = (Button) findViewById(R.id.btnRemovePhoto);
-        btnRemovePhoto.setOnClickListener(this);
+        ibtnRemovePhoto = (ImageButton) findViewById(R.id.ibtnRemovePhoto);
+        ibtnRemovePhoto.setOnClickListener(this);
         btnOk = (Button) findViewById(R.id.btnOk);
         btnOk.setOnClickListener(this);
+
+        if (!Utils.hasInternet(this)) {
+            Toast.makeText(this, R.string.mes_no_internet, Toast.LENGTH_SHORT).show();
+            btnOk.setVisibility(View.GONE);
+        }
 
         // Определяем это новый контакт или редактирование старого
         if (getIntent().hasExtra(Const.MODE) &&
@@ -106,6 +110,43 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         } else {
             fillValues(null);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+
+        //Скрываем отдельные пункты меню
+        String addContact = getResources().getString(R.string.menu_add_contact);
+        String listUsers = getResources().getString(R.string.menu_list_users);
+        String signOut = getResources().getString(R.string.menu_sign_out);
+        String search = getResources().getString(R.string.menu_search);
+        for (int i = 0; i < menu.size(); i++) {
+            if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(listUsers)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(signOut)) {
+                menu.getItem(i).setVisible(false);
+            }
+            if (menu.getItem(i).getTitle().toString().contentEquals(search)) {
+                menu.getItem(i).setVisible(false);
+            }
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ab_about:
+                Utils.showAbout(this);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /** Контроль ввода основных полей */
@@ -134,13 +175,13 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
             case R.id.btnOk:
                 sendToServer();
                 break;
-            case R.id.btnRemovePhoto:
+            case R.id.ibtnRemovePhoto:
                 if ((oldContact != null) &&(oldContact.getPhotoName().length() > 0)){
                     isNeedRemovePhoto = true;
                 }
                 uriPhoto = null;
                 ivPhoto.setImageResource(R.drawable.person_default);
-                btnRemovePhoto.setVisibility(View.INVISIBLE);
+                ibtnRemovePhoto.setVisibility(View.INVISIBLE);
                 break;
         }
     }
@@ -154,7 +195,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
             etEmail.setText("");
             uriPhoto = null;
             ivPhoto.setImageResource(R.drawable.person_default);
-            btnRemovePhoto.setVisibility(View.INVISIBLE);
+            ibtnRemovePhoto.setVisibility(View.INVISIBLE);
         } else {
             etName.setText(contact.getName());
             etPosition.setText(contact.getPosition());
@@ -168,7 +209,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                         .placeholder(R.drawable.loading)
                         .error(R.drawable.person_default)
                         .into(ivPhoto);
-                btnRemovePhoto.setVisibility(View.VISIBLE);
+                ibtnRemovePhoto.setVisibility(View.VISIBLE);
             } else {
                 ivPhoto.setImageResource(R.drawable.person_default);
             }
@@ -201,7 +242,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 if ((!isNewContact) && (oldContact.getPhotoName().length() > 0)) {
                     isNeedRemovePhoto = true;
                 }
-                btnRemovePhoto.setVisibility(View.VISIBLE);
+                ibtnRemovePhoto.setVisibility(View.VISIBLE);
             }
         } else {
             uriPhoto = null;
@@ -217,8 +258,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         final String email = etEmail.getText().toString();
 
         progressBar.setVisibility(View.VISIBLE);
-
-        //todo удалить старое фото из БД если его вообще удаляют (добавить кнопку) или меняют
 
         // Если выбранно фото с галереи то сначало грузим фото, а потом запишем карточку в БД
         // Удаляем старое фото если оно было
@@ -321,11 +360,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
+
 
 
     private void removeOldPhoto(String namePhoto){

@@ -27,8 +27,8 @@
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_large"
             android:gravity="center"
+            android:textSize="@dimen/font_size_large"
             tools:text="Name of contact" />
 
         <TextView
@@ -49,12 +49,12 @@
                 style="@style/icon_simple"
                 android:src="@drawable/ic_phone" />
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_middle"
-            tools:text="0502346453" />
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_middle"
+                tools:text="0502346453" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,12 +67,12 @@
                 style="@style/icon_simple"
                 android:src="@drawable/ic_phone" />
 
-        <TextView
-            android:id="@+id/tvPhone2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_middle"
-            tools:text="063534534534" />
+            <TextView
+                android:id="@+id/tvPhone2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_middle"
+                tools:text="063534534534" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,14 +84,15 @@
             <ImageView
                 style="@style/icon_simple"
                 android:src="@drawable/ic_email" />
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_middle"
-            tools:text="contact@gmail.com" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/font_size_middle"
+                tools:text="contact@gmail.com" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

@@ -30,4 +30,11 @@
         android:text="@string/menu_sign_out"
         android:visibility="invisible"/>
 
+    <TextView
+        android:id="@+id/tvAdminMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mes_register_admin_account"
+        android:visibility="gone"/>
+
 </LinearLayout>

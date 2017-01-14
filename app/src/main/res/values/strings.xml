@@ -29,8 +29,9 @@
     <string name="mes_user_removed">User has been removed</string>
     <string name="mes_hello">Hello</string>
     <string name="mes_no_internet">No internet connection!</string>
-    <string name="mes_register_admin_account">Please register admin account!</string>
-    <string name="mes_about">Corporate phone book of company You helth</string>
+    <string name="mes_register_admin_account">Admin account is not registered!</string>
+    <string name="mes_user_not_founded">User not founded. Please contact to administrator</string>
+    <string name="mes_about">Corporate phone book of company YOU HELTH</string>
     <string name="about_user">Current user</string>
 
 </resources>

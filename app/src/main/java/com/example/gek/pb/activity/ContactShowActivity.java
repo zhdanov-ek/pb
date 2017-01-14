@@ -127,23 +127,7 @@ public class ContactShowActivity extends AppCompatActivity {
         return true;
     }
 
-    /** Создание интента с текстом текущего контакта для передачи в ShareActionProvider */
-    private Intent createShareContactIntent() {
-        String info = tvName.getText().toString() + "\n" + tvPosition.getText().toString() +
-                "\n" + tvPhone.getText().toString();
-        if (tvPhone2.getText().length() > 0) {
-            info = info + "\n" + tvPhone2.getText().toString();
-        }
 
-        if (tvEmail.getText().length() > 0) {
-            info = info + "\n" + tvEmail.getText().toString();
-        }
-
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, info);
-        return shareIntent;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -162,6 +146,24 @@ public class ContactShowActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /** Создание интента с текстом текущего контакта для передачи в ShareActionProvider */
+    private Intent createShareContactIntent() {
+        String info = tvName.getText().toString() + "\n" + tvPosition.getText().toString() +
+                "\n" + tvPhone.getText().toString();
+        if (tvPhone2.getText().length() > 0) {
+            info = info + "\n" + tvPhone2.getText().toString();
+        }
+
+        if (tvEmail.getText().length() > 0) {
+            info = info + "\n" + tvEmail.getText().toString();
+        }
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, info);
+        return shareIntent;
     }
 
     /** Удаление контакта из базы и фото с хранилища */

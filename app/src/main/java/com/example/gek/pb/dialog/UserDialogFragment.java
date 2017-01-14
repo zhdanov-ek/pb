@@ -135,7 +135,6 @@ public class UserDialogFragment extends DialogFragment {
                     case Const.MODE_NEW:
                         if (isNewEmail(email, emails)) {
                             saveUser(email, etDescription.getText().toString(), key);
-                            Toast.makeText(getContext(), "Write " + email, Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "Entered " + email + " finded in list.", Toast.LENGTH_SHORT).show();
                         }

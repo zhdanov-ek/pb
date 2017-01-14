@@ -32,7 +32,7 @@ public class SignInActivity extends AppCompatActivity {
     private ArrayList<String> users;
     private Context ctx = this;
 
-    TextView tvInfo;
+    TextView tvInfo, tvAdminMessage;
     ProgressBar pb;
     Button btnSignOut;
 
@@ -40,7 +40,11 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        initAdmin();
+
         tvInfo = (TextView) findViewById(R.id.tvInfo);
+        tvAdminMessage = (TextView) findViewById(R.id.tvAdminMessage);
         pb = (ProgressBar) findViewById(R.id.pb);
         btnSignOut = (Button) findViewById(R.id.btnSignOut);
         btnSignOut.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +69,6 @@ public class SignInActivity extends AppCompatActivity {
         } else {
             userEmail = auth.getCurrentUser().getEmail();
             Toast.makeText(this, userEmail, Toast.LENGTH_LONG).show();
-
-            adminEmail = "zhdanov.ek@gmail.com";
-            // Инициализация админской учетки в БД и получение текущего значения в программу
-            //initAdmin();
 
             // Ищем введенного пользователя в списке допустимых и только после этого запускаемся
             findUserInWhiteList();
@@ -104,8 +104,6 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     }
                 }
-
-
         }
     }
 
@@ -122,13 +120,14 @@ public class SignInActivity extends AppCompatActivity {
                     String currentAdmin = dataSnapshot.getValue().toString();
                     if (currentAdmin.contentEquals(ADMIN)) {
                         adminEmail = "";
+                        tvAdminMessage.setVisibility(View.VISIBLE);
                     } else {
                         adminEmail = currentAdmin;
+                        Log.d(TAG, "onDataChange: admin = " + adminEmail);
                     }
-                    Log.d(TAG, "Read admin account value = " + currentAdmin);
-
                 } else {
                     Log.d(TAG, "Create base value of admin account");
+                    tvAdminMessage.setVisibility(View.VISIBLE);
                     Const.db.child(Const.CHILD_ADMIN).setValue(ADMIN);
                     adminEmail = "";
                 }
@@ -147,7 +146,6 @@ public class SignInActivity extends AppCompatActivity {
 
     /** Грузим список юзеров и проверяем админ ли наш текущий юзер и вообще есть ли он в белом списке */
     private void findUserInWhiteList(){
-
         ValueEventListener readUsersListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot usersSnapShots) {
@@ -158,14 +156,20 @@ public class SignInActivity extends AppCompatActivity {
                         Log.d(TAG, "readUsers: " + user.child("email").getValue(String.class));
                         if (userEmail.contentEquals(user.child("email").getValue((String.class)))) {
                             isFound = true;         // юзер найден в белом списке
-                            isAdmin = false;
+                            // проверяем не админская ли это учетка (нужно для показа админ меню)
+                            if (userEmail.contentEquals(adminEmail)) {
+                                isAdmin = true;
+                            } else {
+                                isAdmin = false;
+                            }
                             startMainActivity();
                             break;
                         }
                     }
                 }
                 if (!isFound) {
-                    tvInfo.setText("Юзера " + userEmail + " нет в БД. Обратитесь к администратору");
+                    String mes = userEmail + "\n" +getResources().getString(R.string.mes_user_not_founded);
+                    tvInfo.setText(mes);
                     pb.setVisibility(View.GONE);
                     btnSignOut.setVisibility(View.VISIBLE);
                 }

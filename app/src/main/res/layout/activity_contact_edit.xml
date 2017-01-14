@@ -44,16 +44,17 @@
                     <ImageView
                         android:id="@+id/ivPhoto"
                         android:layout_width="@dimen/ava_contact_size"
-                        android:layout_margin="@dimen/item_list_photo_margin"
                         android:layout_height="@dimen/ava_contact_size"
+                        android:layout_margin="@dimen/item_list_photo_margin"
                         tools:background="@drawable/person_default" />
 
-                    <Button
-                        android:id="@+id/btnRemovePhoto"
+
+                    <ImageButton
+                        android:id="@+id/ibtnRemovePhoto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/hint_remove"
-                        android:visibility="invisible"/>
+                        android:src="@drawable/ic_delete"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -65,13 +66,14 @@
                         style="@style/icon_simple"
                         android:src="@drawable/ic_person" />
 
-                        <EditText
-                            android:id="@+id/etName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_name"
-                            android:maxLength="50"
-                            android:textSize="@dimen/font_size_middle" />
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_name"
+                        android:maxLength="50"
+                        android:textSize="@dimen/font_size_middle"
+                        android:inputType="textCapWords" />
 
                 </LinearLayout>
 
@@ -84,13 +86,14 @@
                         style="@style/icon_simple"
                         android:src="@drawable/ic_position" />
 
-                        <EditText
-                            android:id="@+id/etPosition"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_position"
-                            android:maxLength="70"
-                            android:textSize="@dimen/font_size_middle" />
+                    <EditText
+                        android:id="@+id/etPosition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_position"
+                        android:maxLength="70"
+                        android:textSize="@dimen/font_size_middle"
+                        android:inputType="textCapWords"/>
 
                 </LinearLayout>
 
@@ -103,14 +106,14 @@
                         style="@style/icon_simple"
                         android:src="@drawable/ic_phone" />
 
-                        <EditText
-                            android:id="@+id/etPhone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_phone"
-                            android:inputType="phone"
-                            android:maxLength="15"
-                            android:textSize="@dimen/font_size_middle" />
+                    <EditText
+                        android:id="@+id/etPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_phone"
+                        android:inputType="phone"
+                        android:maxLength="15"
+                        android:textSize="@dimen/font_size_middle" />
 
                 </LinearLayout>
 
@@ -123,14 +126,14 @@
                         style="@style/icon_simple"
                         android:src="@drawable/ic_phone" />
 
-                        <EditText
-                            android:id="@+id/etPhone2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_phone"
-                            android:inputType="phone"
-                            android:maxLength="15"
-                            android:textSize="@dimen/font_size_middle" />
+                    <EditText
+                        android:id="@+id/etPhone2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_phone"
+                        android:inputType="phone"
+                        android:maxLength="15"
+                        android:textSize="@dimen/font_size_middle" />
 
                 </LinearLayout>
 
@@ -143,14 +146,14 @@
                         style="@style/icon_simple"
                         android:src="@drawable/ic_email" />
 
-                        <EditText
-                            android:id="@+id/etEmail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_email"
-                            android:inputType="textEmailAddress"
-                            android:maxLength="50"
-                            android:textSize="@dimen/font_size_middle" />
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_email"
+                        android:inputType="textEmailAddress"
+                        android:maxLength="50"
+                        android:textSize="@dimen/font_size_middle" />
 
                 </LinearLayout>
 
