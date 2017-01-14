@@ -7,6 +7,10 @@
         android:title="@string/menu_options"
         android:checkable="false" />
 
+    <item android:id="@+id/ab_sign_out"
+        android:title="@string/menu_sign_out"
+        android:checkable="false" />
+
     <item android:id="@+id/ab_search"
         android:title="@string/menu_search"
         android:icon="@android:drawable/ic_search_category_default"

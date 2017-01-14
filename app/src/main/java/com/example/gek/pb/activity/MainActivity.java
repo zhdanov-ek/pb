@@ -20,6 +20,9 @@ import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
 import com.example.gek.pb.data.ContactsAdapter;
+import com.example.gek.pb.helpers.Utils;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,19 +49,49 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //todo authentication
 
-        // по этому значению ограничивается функционал программы в меню
-        isAdmin = true;
+        // Задаем стандартный менеджер макетов для RV
+        rv = (RecyclerView) findViewById(R.id.rv);
+        rv.setLayoutManager(new LinearLayoutManager(this));
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
 
 
-        rv = (RecyclerView) findViewById(R.id.rv);
-        // Задаем стандартный менеджер макетов
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        /** Если нет авторизации то выводим окно для нее */
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            startActivityForResult(AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .build(), Const.REQUEST_SIGN_IN);
+        } else {
+           initWork();
+        }
+    }
 
+
+    /** Получаем результат работы с окном авторизации */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_SIGN_IN)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                initWork();
+                Utils.showSnackBar(rv, "Вход выполнен");
+            } else {
+                rv.setVisibility(View.GONE);
+                Utils.showSnackBar(rv, "Вход не выполнен");
+                finish();
+            }
+        }
+    }
+
+    /** Инициализация формирования основного списка контактов */
+    private void initWork(){
+        // по этому значению ограничивается функционал программы в меню
+        isAdmin = true;
 
         // Описываем слушатель, который возвращает в программу весь список данных,
         // которые находятся в child(CHILD_CONTACTS)
@@ -94,8 +127,6 @@ public class MainActivity extends AppCompatActivity {
         // устанавливаем слушатель на изменения в нашей базе в разделе контактов
         db.child(Const.CHILD_CONTACTS).addValueEventListener(contactCardListener);
     }
-
-
 
 
 
@@ -175,10 +206,23 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.ab_users:
                 startActivity(new Intent(this, UsersActivity.class));
+                break;
+            case R.id.ab_sign_out:
+                signOut();
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /** Выход из учетной записи: обнуляем наш инстанс и выводим активити FireBase для авторизации */
+    private void signOut(){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().signOut();
+            startActivityForResult(AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .build(), Const.REQUEST_SIGN_IN);
+        }
     }
 
 

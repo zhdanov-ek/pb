@@ -21,6 +21,7 @@ public class Const {
     public static final int MODE_EDIT = 1;
 
     public static final int REQUEST_EDIT_CONTACT = 1;
+    public static final int REQUEST_SIGN_IN = 101;
 
 
 }

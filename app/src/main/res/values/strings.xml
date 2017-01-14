@@ -17,6 +17,7 @@
     <string name="confirm_remove_contact">Do you want remove contact?</string>
     <string name="menu_list_users">List users</string>
     <string name="menu_options">Options</string>
+    <string name="menu_sign_out">Sign out</string>
     <string name="menu_search">Search</string>
     <string name="menu_share">Share</string>
 
