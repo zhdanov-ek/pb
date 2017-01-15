@@ -8,6 +8,7 @@
     <string name="hint_ok">OK</string>
     <string name="hint_cancel">CANCEL</string>
     <string name="hint_remove">REMOVE</string>
+    <string name="hint_signin">Sign In</string>
     <string name="hint_restore">RESTORE</string>
     <string name="hint_description">Description</string>
 
@@ -30,8 +31,9 @@
     <string name="mes_hello">Hello</string>
     <string name="mes_no_internet">No internet connection!</string>
     <string name="mes_register_admin_account">Admin account is not registered!</string>
-    <string name="mes_user_not_founded">User not founded. Please contact to administrator</string>
-    <string name="mes_about">Corporate phone book of company YOU HELTH</string>
+    <string name="mes_user_not_founded">User not founded. Please contact to administrator of this program</string>
+    <string name="mes_about">Corporate phone book</string>
+    <string name="mes_company">Vashe Zdorovie</string>
     <string name="about_user">Current user</string>
 
 </resources>

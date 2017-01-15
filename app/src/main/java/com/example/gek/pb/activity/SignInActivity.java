@@ -7,20 +7,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
-import com.example.gek.pb.helpers.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -29,28 +26,43 @@ public class SignInActivity extends AppCompatActivity {
     public static Boolean isAdmin = false;
     public static String userEmail = "";
     static String adminEmail = "";
-    private ArrayList<String> users;
-    private Context ctx = this;
+
 
     TextView tvInfo, tvAdminMessage;
-    ProgressBar pb;
-    Button btnSignOut;
+    Button btnSignOut, btnSignIn;
+    private Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
+        ctx = this;
         initAdmin();
+
 
         tvInfo = (TextView) findViewById(R.id.tvInfo);
         tvAdminMessage = (TextView) findViewById(R.id.tvAdminMessage);
-        pb = (ProgressBar) findViewById(R.id.pb);
+        btnSignIn = (Button)findViewById(R.id.btnSignIn);
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .build(), Const.REQUEST_SIGN_IN);
+            }
+        });
+
         btnSignOut = (Button) findViewById(R.id.btnSignOut);
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signOut();
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    FirebaseAuth.getInstance().signOut();
+                    userEmail = "";
+                    btnSignIn.setVisibility(View.VISIBLE);
+                    btnSignOut.setVisibility(View.GONE);
+                    tvInfo.setText("");
+                }
             }
         });
     }
@@ -59,22 +71,16 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Если нет авторизации то выводим окно для нее
         // https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
-            startActivityForResult(AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .build(), Const.REQUEST_SIGN_IN);
-        } else {
-            userEmail = auth.getCurrentUser().getEmail();
-            Toast.makeText(this, userEmail, Toast.LENGTH_LONG).show();
 
-            // Ищем введенного пользователя в списке допустимых и только после этого запускаемся
+        // Если авторизация есть то проверяем есть ли даннный юзер в нашем белом списке
+        // и после успшного поиска запускаем программу
+        if (auth.getCurrentUser() != null) {
+            userEmail = auth.getCurrentUser().getEmail();
             findUserInWhiteList();
         }
     }
-
 
 
     /** Получаем результат работы с окном авторизации или ответы с мейнАктивити*/
@@ -86,7 +92,6 @@ public class SignInActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK)
                 {
                     tvInfo.setText("Успешная авторизация");
-                    btnSignOut.setVisibility(View.GONE);
                 } else {
                     tvInfo.setText("Печаль беда - не удалось авторизироваться");
                 }
@@ -96,7 +101,12 @@ public class SignInActivity extends AppCompatActivity {
                     if (data.hasExtra(Const.ACTION_MAIN)){
                         switch (data.getIntExtra(Const.ACTION_MAIN, 0)){
                             case Const.ACTION_SIGNOUT:
-                                signOut();
+                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                    FirebaseAuth.getInstance().signOut();
+                                    userEmail = "";
+                                    btnSignOut.setVisibility(View.GONE);
+                                    btnSignIn.setVisibility(View.VISIBLE);
+                                }
                                 break;
                             case Const.ACTION_TURNOFF:
                                 finish();
@@ -120,14 +130,14 @@ public class SignInActivity extends AppCompatActivity {
                     String currentAdmin = dataSnapshot.getValue().toString();
                     if (currentAdmin.contentEquals(ADMIN)) {
                         adminEmail = "";
-                        tvAdminMessage.setVisibility(View.VISIBLE);
+                        Toast.makeText(ctx, R.string.mes_register_admin_account, Toast.LENGTH_LONG).show();
+                        //tvAdminMessage.setVisibility(View.VISIBLE);
                     } else {
                         adminEmail = currentAdmin;
-                        Log.d(TAG, "onDataChange: admin = " + adminEmail);
+                        //Log.d(TAG, "onDataChange: admin = " + adminEmail);
                     }
                 } else {
                     Log.d(TAG, "Create base value of admin account");
-                    tvAdminMessage.setVisibility(View.VISIBLE);
                     Const.db.child(Const.CHILD_ADMIN).setValue(ADMIN);
                     adminEmail = "";
                 }
@@ -149,7 +159,6 @@ public class SignInActivity extends AppCompatActivity {
         ValueEventListener readUsersListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot usersSnapShots) {
-                users = new ArrayList<>();
                 Boolean isFound = false;
                 if (usersSnapShots.getChildrenCount() != 0){
                     for (DataSnapshot user: usersSnapShots.getChildren()) {
@@ -170,8 +179,8 @@ public class SignInActivity extends AppCompatActivity {
                 if (!isFound) {
                     String mes = userEmail + "\n" +getResources().getString(R.string.mes_user_not_founded);
                     tvInfo.setText(mes);
-                    pb.setVisibility(View.GONE);
                     btnSignOut.setVisibility(View.VISIBLE);
+                    btnSignIn.setVisibility(View.GONE);
                 }
             }
             @Override
@@ -193,15 +202,5 @@ public class SignInActivity extends AppCompatActivity {
     private void startMainActivity(){
         Intent intentMainActivity = new Intent(this, MainActivity.class);
         startActivityForResult(intentMainActivity, Const.REQUEST_MAIN);
-    }
-
-    private void signOut(){
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().signOut();
-            userEmail = "";
-            startActivityForResult(AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .build(), Const.REQUEST_SIGN_IN);
-        }
     }
 }

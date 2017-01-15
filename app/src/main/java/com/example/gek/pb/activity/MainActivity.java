@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     Contact contact = child.getValue(Contact.class);
                     contacts.add(contact);
-                    Log.d(TAG, "onDataChange: " + contact.getName() + " - " + contact.getPhone() + "\n");
                 }
                 if (contacts.size() == 0) {
                     Toast.makeText(ctx, R.string.mes_no_records, Toast.LENGTH_LONG).show();
@@ -189,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    /** Выход из учетной записи: обнуляем наш инстанс и выводим активити FireBase для авторизации */
+    /** Выход из учетной записи: обнуляем наш инстанс */
     private void signOut(){
         Intent intentSignOut = new Intent();
         intentSignOut.putExtra(Const.ACTION_MAIN, Const.ACTION_SIGNOUT);
