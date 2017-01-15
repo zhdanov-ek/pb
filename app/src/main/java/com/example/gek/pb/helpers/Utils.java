@@ -39,12 +39,29 @@ public class Utils {
 
     public static void showAbout(Context ctx){
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        String message = ctx.getResources().getString(R.string.mes_about) + "\n" +
-                ctx.getResources().getString(R.string.about_user) + ": " +
+        String message = ctx.getResources().getString(R.string.mes_about) + "\n\n" +
+                ctx.getResources().getString(R.string.about_user) + ":\n" +
                 SignInActivity.userEmail;
         builder.setTitle(R.string.menu_about)
                 .setMessage(message)
                 .setIcon(R.drawable.ic_about)
+                .setCancelable(true)
+                .setNegativeButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public static void showHelp(Context ctx){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        String message = ctx.getResources().getString(R.string.mes_help);
+        builder.setTitle(R.string.app_name)
+                .setMessage(message)
+                .setIcon(R.drawable.ic_help)
                 .setCancelable(true)
                 .setNegativeButton("OK",
                         new DialogInterface.OnClickListener() {

@@ -33,7 +33,10 @@
     <string name="mes_register_admin_account">Admin account is not registered!</string>
     <string name="mes_user_not_founded">User not founded. Please contact to administrator of this program</string>
     <string name="mes_about">Corporate phone book</string>
+    <string name="mes_error_auth">Error authentication. Try again.</string>
     <string name="mes_company">Vashe Zdorovie</string>
     <string name="about_user">Current user</string>
+    <string name="mes_help">You can sign in only after administrator add your email in white list of users.\n
+        Please send your email account  to system administrator of you company.</string>
 
 </resources>

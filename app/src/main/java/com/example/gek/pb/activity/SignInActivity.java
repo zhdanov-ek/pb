@@ -2,6 +2,7 @@ package com.example.gek.pb.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
+import com.example.gek.pb.helpers.Utils;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     TextView tvInfo, tvAdminMessage;
     Button btnSignOut, btnSignIn;
     private Context ctx;
+    FloatingActionButton fabHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,13 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
+        fabHelp = (FloatingActionButton) findViewById(R.id.fabHelp);
+        fabHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.showHelp(ctx);
+            }
+        });
     }
 
 
@@ -93,7 +103,7 @@ public class SignInActivity extends AppCompatActivity {
                 {
                     tvInfo.setText("Успешная авторизация");
                 } else {
-                    tvInfo.setText("Печаль беда - не удалось авторизироваться");
+                    tvInfo.setText(R.string.mes_error_auth);
                 }
                 break;
             case Const.REQUEST_MAIN:
