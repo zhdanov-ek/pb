@@ -22,4 +22,12 @@
     <dimen name="font_size_large">20sp</dimen>
 
     <dimen name="floating_button_layout_margin">8dp</dimen>
+
+
+    <dimen name="button_padding">0dp</dimen>
+    <dimen name="button_width">100dp</dimen>
+    <dimen name="button_small_size">50dp</dimen>
+    <dimen name="button_height">30dp</dimen>
+    <dimen name="button_radius">2dp</dimen>
+    <dimen name="button_layout_margin">3dp</dimen>
 </resources>

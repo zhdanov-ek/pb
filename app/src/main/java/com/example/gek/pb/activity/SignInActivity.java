@@ -114,6 +114,7 @@ public class SignInActivity extends AppCompatActivity {
                                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                     FirebaseAuth.getInstance().signOut();
                                     userEmail = "";
+                                    tvInfo.setText("");
                                     btnSignOut.setVisibility(View.GONE);
                                     btnSignIn.setVisibility(View.VISIBLE);
                                 }

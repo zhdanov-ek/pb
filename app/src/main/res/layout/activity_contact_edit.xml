@@ -50,9 +50,10 @@
 
 
                     <ImageButton
+                        style="@style/ButtonRed"
+                        android:layout_height="@dimen/button_small_size"
+                        android:layout_width="@dimen/button_small_size"
                         android:id="@+id/ibtnRemovePhoto"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:src="@drawable/ic_delete"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -159,6 +160,7 @@
 
                 <Button
                     android:id="@+id/btnOk"
+                    style="@style/ButtonBlue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:enabled="false"
