@@ -212,6 +212,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 ibtnRemovePhoto.setVisibility(View.VISIBLE);
             } else {
                 ivPhoto.setImageResource(R.drawable.person_default);
+                ibtnRemovePhoto.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -358,8 +359,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     private Boolean isValidate(){
         return true;
     }
-
-
 
 
 

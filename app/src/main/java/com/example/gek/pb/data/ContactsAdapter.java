@@ -27,19 +27,11 @@ import java.util.ArrayList;
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
     private ArrayList<Contact> listContacts;
     private Context ctx;
-    private String pathToImage;
-    private File appFolder;
-    private Drawable defaultPhoto;
-
     private static final String TAG = "ContactsAdapter";
 
     public ContactsAdapter(Context ctx, ArrayList<Contact> listContacts){
         this.listContacts = listContacts;
         this.ctx = ctx;
-        pathToImage = Const.STORAGE + "/" +Const.IMAGE_FOLDER;
-        appFolder = Environment.getExternalStorageDirectory();
-
-        defaultPhoto = ctx.getResources().getDrawable(R.drawable.person_default);
     }
 
     // Создаем вью которые заполнят экран и будут обновляться данными при прокрутке
@@ -54,6 +46,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Contact contact = listContacts.get(position);
+        holder.tvName.setText(contact.getName());
+        holder.tvPosition.setText(contact.getPosition());
         if ((contact.getPhotoUrl() != null) && (contact.getPhotoUrl().length() > 0)) {
             Glide.with(ctx)
                     .load(contact.getPhotoUrl())
@@ -61,10 +55,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                     .error(R.drawable.person_default)
                     .into(holder.ivPhoto);
         } else {
-            holder.ivPhoto.setBackground(defaultPhoto);
+            holder.ivPhoto.setImageResource(R.drawable.person_default);
         }
-        holder.tvName.setText(contact.getName());
-        holder.tvPosition.setText(contact.getPosition());
+
     }
 
     @Override
