@@ -92,4 +92,16 @@ public class Utils {
             return c1.getName().compareTo(c2.getName());
         }
     }
+
+    public static ArrayList<Contact> searchContacts(ArrayList<Contact> list, String text){
+        ArrayList<Contact> result = new ArrayList<>();
+        for (Contact contact: list) {
+            if ((contact.getName().toLowerCase().contains(text.toLowerCase())) ||
+                    (contact.getPosition().toLowerCase().contains(text.toLowerCase())))
+            {
+                result.add(contact);
+            }
+        }
+        return result;
+    }
 }

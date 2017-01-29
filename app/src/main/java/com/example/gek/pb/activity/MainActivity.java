@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "11111";
     private ArrayList<Contact> contacts;
+    private ArrayList<Contact> searchContacts;
     private RecyclerView rv;
     private ContactsAdapter contactsAdapter;
     private Context ctx = this;
@@ -118,40 +119,23 @@ public class MainActivity extends AppCompatActivity {
 
         SearchView searchView =(SearchView) MenuItemCompat.getActionView(searchItem);
 
-//        // Отрабатываем смену текста в окне поиска
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            // Реакция на команду ввода (Enter)
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//            // Непосредственно событие смены содержимого. Делаем запрос к БД по каждому изменению
-//            // в окне поиска
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                // Делаем выборку из БД после чего проверяем есть ли результат. Если нет то
-//                // делаем выборку всех слов
-//                Cursor cursor = db.getAllData(Consts.LIST_TYPE_SEARCH, Consts.ORDER_BY_ABC, newText);
-//                if ((cursor == null) || (cursor.getCount() == 0)) {
-//                    cursor = db.getAllData(Consts.LIST_TYPE_ALL, Consts.ORDER_BY_ABC, null);
-//                }
-//                mListWords = db.getFullListWords(cursor);
-//                mAdapter = new RecyclerViewAdapter((Activity)mCtx, mListWords);
-//                mRrecyclerView.setAdapter(mAdapter);
-//                return false;
-//            }
-//        });
-
-        // По окончанию работы с SearchView отображаем все слова в алфавитном порядке
-        // и в меню это отмечаем это в меню
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+        // Отрабатываем смену текста в окне поиска
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // Реакция на команду ввода (Enter)
             @Override
-            public boolean onClose() {
-//                MenuItem menuItem = menu.findItem(R.id.ab_sort_abc);
-//                menuItem.setChecked(true);
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            // При каждом изменении в окне поиска обновляем результат
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchContacts = Utils.searchContacts(contacts, newText);
+                contactsAdapter = new ContactsAdapter(ctx, searchContacts);
+                rv.setAdapter(contactsAdapter);
                 return false;
             }
         });
+
         return true;
     }
 
