@@ -2,7 +2,6 @@ package com.example.gek.pb.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,28 +22,29 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private static final String TAG = "11111111111";
+    private static final String TAG = "SignInActivity";
     // флаг показывающий, что авторизирован админ
     public static Boolean isAdmin = false;
     public static String userEmail = "";
+    // флаг показывающий, что авторизация сверена с белым списком (или юзер админ)
+    private Boolean isCanRun = false;
     static String adminEmail = "";
+    private FirebaseAuth auth;
 
-
-    TextView tvInfo, tvAdminMessage;
-    Button btnSignOut, btnSignIn;
+    private TextView tvInfo;
+    private Button btnSignOut, btnSignIn;
     private Context ctx;
-    FloatingActionButton fabHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ctx = this;
-        initAdmin();
 
+        // https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md
+        auth = FirebaseAuth.getInstance();
 
         tvInfo = (TextView) findViewById(R.id.tvInfo);
-        tvAdminMessage = (TextView) findViewById(R.id.tvAdminMessage);
         btnSignIn = (Button)findViewById(R.id.btnSignIn);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,8 +68,8 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
-        fabHelp = (FloatingActionButton) findViewById(R.id.fabHelp);
-        fabHelp.setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.fabHelp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.showHelp(ctx);
@@ -81,31 +81,32 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        // Если авторизация есть то проверяем есть ли даннный юзер в нашем белом списке
-        // и после успшного поиска запускаем программу
-        if (auth.getCurrentUser() != null) {
-            userEmail = auth.getCurrentUser().getEmail();
-            findUserInWhiteList();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            if (isCanRun) {
+                startMainActivity();
+            } else {
+                initUser();
+            }
         }
     }
 
 
-    /** Получаем результат работы с окном авторизации или ответы с мейнАктивити*/
+
+    /** Получаем результат работы с окном авторизации или ответы с мейнАктивити */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
+            // ответ с окна авторизации
             case Const.REQUEST_SIGN_IN:
                 if (resultCode == RESULT_OK)
                 {
-                    tvInfo.setText("Успешная авторизация");
+                    tvInfo.setText(R.string.mes_succes_auth);
                 } else {
                     tvInfo.setText(R.string.mes_error_auth);
                 }
                 break;
+            // ответ с главного окна (выйти из системы, закончить работу с программой)
             case Const.REQUEST_MAIN:
                 if ((resultCode == RESULT_OK) && (data != null)){
                     if (data.hasExtra(Const.ACTION_MAIN)){
@@ -114,6 +115,8 @@ public class SignInActivity extends AppCompatActivity {
                                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                     FirebaseAuth.getInstance().signOut();
                                     userEmail = "";
+                                    isCanRun = false;
+                                    isAdmin = false;
                                     tvInfo.setText("");
                                     btnSignOut.setVisibility(View.GONE);
                                     btnSignIn.setVisibility(View.VISIBLE);
@@ -130,8 +133,9 @@ public class SignInActivity extends AppCompatActivity {
 
     /** Пытаемся получить с БД учетку админа: если поля еще нет то создаем его с базовым значением
      * Если есть то полученное значение фиксируем в переменной  adminEmail с которой в дальнейшем
-     * будем сравнивать реальный авторизированный еккаунт */
-    private void initAdmin(){
+     * будем сравнивать реальный авторизированный еккаунт
+     * Если авторизирован не админ то ищем юзера в белом списке БД */
+    private void initUser(){
         ValueEventListener adminAccountListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -142,21 +146,29 @@ public class SignInActivity extends AppCompatActivity {
                     if (currentAdmin.contentEquals(ADMIN)) {
                         adminEmail = "";
                         Toast.makeText(ctx, R.string.mes_register_admin_account, Toast.LENGTH_LONG).show();
-                        //tvAdminMessage.setVisibility(View.VISIBLE);
                     } else {
                         adminEmail = currentAdmin;
-                        //Log.d(TAG, "onDataChange: admin = " + adminEmail);
                     }
                 } else {
-                    Log.d(TAG, "Create base value of admin account");
+                    // создаем запись в БД с дефолтным значением
                     Const.db.child(Const.CHILD_ADMIN).setValue(ADMIN);
                     adminEmail = "";
+                }
+
+                // Если наш юзер админ то запускаемся как админ, а иначе ищем юзера в белом списке
+                userEmail = auth.getCurrentUser().getEmail();
+                if (userEmail.contentEquals(adminEmail)){
+                    isCanRun = true;
+                    isAdmin = true;
+                    startMainActivity();
+                } else {
+                    findUserInWhiteList();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "initAdmin:onCancelled", databaseError.toException());
+                Log.w(TAG, "initUser:onCancelled", databaseError.toException());
             }
         };
 
@@ -165,7 +177,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    /** Грузим список юзеров и проверяем админ ли наш текущий юзер и вообще есть ли он в белом списке */
+    /** Ищем авторизированного юзера в белом списке  */
     private void findUserInWhiteList(){
         ValueEventListener readUsersListener = new ValueEventListener() {
             @Override
@@ -176,13 +188,6 @@ public class SignInActivity extends AppCompatActivity {
                         Log.d(TAG, "readUsers: " + user.child("email").getValue(String.class));
                         if (userEmail.contentEquals(user.child("email").getValue((String.class)))) {
                             isFound = true;         // юзер найден в белом списке
-                            // проверяем не админская ли это учетка (нужно для показа админ меню)
-                            if (userEmail.contentEquals(adminEmail)) {
-                                isAdmin = true;
-                            } else {
-                                isAdmin = false;
-                            }
-                            startMainActivity();
                             break;
                         }
                     }
@@ -192,6 +197,9 @@ public class SignInActivity extends AppCompatActivity {
                     tvInfo.setText(mes);
                     btnSignOut.setVisibility(View.VISIBLE);
                     btnSignIn.setVisibility(View.GONE);
+                } else {
+                    isCanRun = true;
+                    startMainActivity();
                 }
             }
             @Override
@@ -199,15 +207,7 @@ public class SignInActivity extends AppCompatActivity {
                 Log.w(TAG, "readUsers: onCancelled", databaseError.toException());
             }
         };
-
-        // Если авторизированный админ то запускаемся. Иначе - проверям юзера по белому списку с БД
-        if (userEmail.contentEquals(adminEmail)) {
-            isAdmin = true;
-            startMainActivity();
-        } else {
-            Const.db.child(Const.CHILD_USERS).addValueEventListener(readUsersListener);
-        }
-
+        Const.db.child(Const.CHILD_USERS).addValueEventListener(readUsersListener);
     }
 
     private void startMainActivity(){

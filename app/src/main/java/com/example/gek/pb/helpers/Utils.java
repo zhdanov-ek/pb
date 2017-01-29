@@ -11,6 +11,12 @@ import android.view.View;
 
 import com.example.gek.pb.R;
 import com.example.gek.pb.activity.SignInActivity;
+import com.example.gek.pb.data.Contact;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by gek on 12.01.2017.
@@ -71,5 +77,19 @@ public class Utils {
                         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+
+    // Сортировка списка по именам
+    public static void sortContacts(ArrayList<Contact> inputList){
+        Collections.sort(inputList, new NameContactComparator());
+    }
+
+    // Вспомогательный класс для сравнения объектов по конкретным полям
+    public static class NameContactComparator implements Comparator<Contact> {
+        @Override
+        public int compare(Contact c1, Contact c2) {
+            return c1.getName().compareTo(c2.getName());
+        }
     }
 }

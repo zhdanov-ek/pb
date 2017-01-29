@@ -37,14 +37,6 @@
             android:text="@string/menu_sign_out"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvAdminMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mes_register_admin_account"
-            android:textSize="@dimen/font_size_large"
-            android:visibility="invisible" />
-
     </LinearLayout>
 
 

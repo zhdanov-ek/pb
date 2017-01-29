@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     /** Инициализация формирования основного списка контактов */
     private void initWork(){
 
@@ -76,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 if (contacts.size() == 0) {
                     Toast.makeText(ctx, R.string.mes_no_records, Toast.LENGTH_LONG).show();
                 }
+                Utils.sortContacts(contacts);
                 contactsAdapter = new ContactsAdapter(ctx, contacts);
                 rv.setAdapter(contactsAdapter);
             }
