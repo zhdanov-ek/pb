@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
 import com.example.gek.pb.activity.ContactShowActivity;
+import com.example.gek.pb.helpers.CircleTransform;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -28,10 +29,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     private ArrayList<Contact> listContacts;
     private Context ctx;
     private static final String TAG = "ContactsAdapter";
+    private CircleTransform circleTransform;
 
     public ContactsAdapter(Context ctx, ArrayList<Contact> listContacts){
         this.listContacts = listContacts;
         this.ctx = ctx;
+        this.circleTransform = new CircleTransform(ctx);
     }
 
     // Создаем вью которые заполнят экран и будут обновляться данными при прокрутке
@@ -52,6 +55,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             Glide.with(ctx)
                     .load(contact.getPhotoUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .transform(circleTransform)
                     .error(R.drawable.person_default)
                     .into(holder.ivPhoto);
         } else {
