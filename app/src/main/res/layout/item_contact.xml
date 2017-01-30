@@ -1,27 +1,18 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginLeft="@dimen/item_list_layout_margin"
-    android:layout_marginRight="@dimen/item_list_layout_margin"
-    android:layout_marginTop="@dimen/item_list_layout_margin"
-    card_view:cardCornerRadius="@dimen/item_list_corner_radius">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+    android:gravity="center_vertical"
+    android:padding="@dimen/item_list_padding"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_item">
 
         <ImageView
             android:id="@+id/ivPhoto"
             android:layout_width="@dimen/ava_list_size"
             android:layout_height="@dimen/ava_list_size"
             android:layout_margin="@dimen/item_list_photo_margin"
-            tools:background="@drawable/loading"  />
+            tools:background="@drawable/person_default"  />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,6 +35,4 @@
                 android:textSize="@dimen/font_size_small" />
 
         </LinearLayout>
-    </LinearLayout>
-
-</android.support.v7.widget.CardView>
+</LinearLayout>

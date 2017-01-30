@@ -206,7 +206,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 Glide.with(this)
                         .load(contact.getPhotoUrl())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .placeholder(R.drawable.loading)
                         .error(R.drawable.person_default)
                         .into(ivPhoto);
                 ibtnRemovePhoto.setVisibility(View.VISIBLE);

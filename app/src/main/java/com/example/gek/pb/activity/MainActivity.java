@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -44,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         // Задаем стандартный менеджер макетов для RV
         rv = (RecyclerView) findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
+
+        // определяем разделители для айтемов
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(this,DividerItemDecoration.VERTICAL );
+        rv.addItemDecoration(dividerItemDecoration);
 
         if (!Utils.hasInternet(this)) {
             Utils.showSnackBar(rv, getResources().getString(R.string.mes_no_internet));

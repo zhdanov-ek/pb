@@ -2,25 +2,19 @@ package com.example.gek.pb.data;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
 import com.example.gek.pb.activity.ContactShowActivity;
 import com.example.gek.pb.helpers.CircleTransform;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
 import java.util.ArrayList;
 
 
@@ -51,16 +45,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         final Contact contact = listContacts.get(position);
         holder.tvName.setText(contact.getName());
         holder.tvPosition.setText(contact.getPosition());
-        if ((contact.getPhotoUrl() != null) && (contact.getPhotoUrl().length() > 0)) {
-            Glide.with(ctx)
-                    .load(contact.getPhotoUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .transform(circleTransform)
-                    .error(R.drawable.person_default)
-                    .into(holder.ivPhoto);
-        } else {
-            holder.ivPhoto.setImageResource(R.drawable.person_default);
-        }
+        Glide.with(ctx)
+            .load(contact.getPhotoUrl())
+            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+            .error(R.drawable.person_default)
+            .transform(circleTransform)
+            .into(holder.ivPhoto);
 
     }
 

@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +84,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         @Override
         public void onClick(View view) {
             int position = this.getAdapterPosition();
+            // создаем анимацию - эффект изменения прозрачности по касанию на айтеме
+            Animation anim = new AlphaAnimation(0.3f, 1.0f);
+            anim.setDuration(1000);
+            view.startAnimation(anim);
             UserDialogFragment userDialogFragment =
                     UserDialogFragment.newInstance(
                             listUsers.get(position).getEmail(),

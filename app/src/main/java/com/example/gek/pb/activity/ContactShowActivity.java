@@ -29,6 +29,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
+import com.example.gek.pb.helpers.CircleTransform;
 import com.example.gek.pb.helpers.Utils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,7 +39,8 @@ import com.google.firebase.storage.StorageReference;
 public class ContactShowActivity extends AppCompatActivity {
 
     private static final String TAG = "GEK";
-    ImageView ivPhoto;
+    ImageView ivPhoto, ivRing;
+    ImageView ivPhone, ivPhone2;
     TextView tvName, tvPosition, tvPhone, tvPhone2, tvEmail;
     Contact openContact;
     LinearLayout llPhone, llPhone2, llEmail;
@@ -59,10 +61,13 @@ public class ContactShowActivity extends AppCompatActivity {
         llPhone2 = (LinearLayout) findViewById(R.id.llPhone2);
         llEmail = (LinearLayout) findViewById(R.id.llEmail);
         ivPhoto = (ImageView) findViewById(R.id.ivPhoto);
+        ivRing = (ImageView) findViewById(R.id.ivRing);
         tvName = (TextView) findViewById(R.id.tvName);
         tvPosition = (TextView) findViewById(R.id.tvPosition);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
+        ivPhone = (ImageView) findViewById(R.id.ivPhone);
         tvPhone2 = (TextView) findViewById(R.id.tvPhone2);
+        ivPhone2 = (ImageView) findViewById(R.id.ivPhone2);
         tvEmail = (TextView) findViewById(R.id.tvEmail);
 
         llPhone.setOnClickListener(new View.OnClickListener() {
@@ -218,19 +223,47 @@ public class ContactShowActivity extends AppCompatActivity {
                     .load(contact.getPhotoUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .error(R.drawable.person_default)
+                    .transform(new CircleTransform(this))
                     .into(ivPhoto);
         } else {
             ivPhoto.setImageResource(R.drawable.person_default);
+            ivRing.setVisibility(View.GONE);
         }
         tvName.setText(contact.getName());
         tvPosition.setText(contact.getPosition());
         tvPhone.setText(contact.getPhone());
+        // Меняем иконку если оператор удалось определить
+        switch (Utils.defineMobile(contact.getPhone())) {
+            case "life":
+                ivPhone.setImageResource(R.drawable.life);
+                break;
+            case "mts":
+                ivPhone.setImageResource(R.drawable.mts);
+                break;
+            case "kyivstar":
+                ivPhone.setImageResource(R.drawable.kyivstar);
+                break;
+        }
+
         tvPhone2.setText(contact.getPhone2());
         tvEmail.setText(contact.getEmail());
+
 
         if (contact.getPhone2().isEmpty()){
             llPhone2.setVisibility(View.GONE);
         } else {
+            // Меняем иконку если оператор удалось определить
+            switch (Utils.defineMobile(contact.getPhone2())){
+                case "life":
+                    ivPhone2.setImageResource(R.drawable.life);
+                    break;
+                case "mts":
+                    ivPhone2.setImageResource(R.drawable.mts);
+                    break;
+                case "kyivstar":
+                    ivPhone2.setImageResource(R.drawable.kyivstar);
+                    break;
+            }
             llPhone2.setVisibility(View.VISIBLE);
         }
         if (contact.getEmail().isEmpty()){

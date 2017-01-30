@@ -5,6 +5,7 @@
     <color name="colorAccent">#ff5722</color>
 
     <color name="colorBackground">#ffffff</color>
+    <color name="colorBackgroundSelect">#d0f6d6</color>
 
 
     <color name="colorTextButton">#ffffff</color>

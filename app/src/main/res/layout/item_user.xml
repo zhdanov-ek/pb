@@ -1,34 +1,23 @@
-<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
-    android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_list_height"
-    android:layout_marginLeft="@dimen/item_list_layout_margin"
-    android:layout_marginRight="@dimen/item_list_layout_margin"
-    android:layout_marginTop="@dimen/item_list_layout_margin"
-    card_view:cardCornerRadius="@dimen/item_list_corner_radius">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="@dimen/item_list_padding">
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_middle"
-            tools:text="@string/hint_email"/>
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/item_list_padding">
 
-        <TextView
-            android:id="@+id/tvDescription"
-            tools:text="@string/hint_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_small"/>
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_size_middle"
+        tools:text="@string/hint_email" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_size_small"
+        tools:text="@string/hint_description" />
 
-</android.support.v7.widget.CardView>
+</LinearLayout>

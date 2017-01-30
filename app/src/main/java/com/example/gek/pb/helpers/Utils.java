@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Created by gek on 12.01.2017.
+ * Вспомогательные методы
  */
 
 public class Utils {
@@ -79,13 +79,34 @@ public class Utils {
         alert.show();
     }
 
+    /**  По первым трем цифрам определяет мобильного оператора возвращая его название */
+    //todo Заменить этот метод классом, который будет грузить картинку в вью
+    public static String defineMobile(String num){
+        String logo;
+        String prefix = String.copyValueOf(num.toCharArray(), 0, 3);
+        if (prefix.contentEquals("063") || prefix.contentEquals("093") || prefix.contentEquals("073") ) {
+            logo = "life";
+        } else if (prefix.contentEquals("099") || prefix.contentEquals("095") ||
+                prefix.contentEquals("050") || prefix.contentEquals("066")) {
+            logo = "mts";
+        } else if (prefix.contentEquals("067") || prefix.contentEquals("068") ||
+                prefix.contentEquals("096") || prefix.contentEquals("097") ||
+                prefix.contentEquals("098")) {
+            logo = "kyivstar";
+        } else logo = "other";
 
-    // Сортировка списка по именам
+        return logo;
+    }
+
+
+
+
+    /** Сортировка списка по именам */
     public static void sortContacts(ArrayList<Contact> inputList){
         Collections.sort(inputList, new NameContactComparator());
     }
 
-    // Вспомогательный класс для сравнения объектов по конкретным полям
+    /** Вспомогательный класс для сравнения объектов по конкретным полям */
     public static class NameContactComparator implements Comparator<Contact> {
         @Override
         public int compare(Contact c1, Contact c2) {
@@ -93,6 +114,7 @@ public class Utils {
         }
     }
 
+    /** Возвращает отобранный список по указанному тексту */
     public static ArrayList<Contact> searchContacts(ArrayList<Contact> list, String text){
         ArrayList<Contact> result = new ArrayList<>();
         for (Contact contact: list) {
