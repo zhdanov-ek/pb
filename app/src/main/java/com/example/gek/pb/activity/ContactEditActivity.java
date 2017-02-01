@@ -174,6 +174,7 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()){
             case R.id.btnOk:
                 sendToServer();
+                //todo выставить фокус в первое поле после ввода
                 break;
             case R.id.ibtnRemovePhoto:
                 if ((oldContact != null) &&(oldContact.getPhotoName().length() > 0)){
@@ -299,7 +300,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                         Intent resultIntent = new Intent();
                         resultIntent.putExtra(Const.EXTRA_CONTACT, changedContact);
                         setResult(RESULT_OK, resultIntent);
-                        finish();
                     }
                 }
             });
@@ -334,7 +334,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 setResult(RESULT_OK, resultIntent);
                 //todo Toast for add new Contact is need
             }
-            finish();
         }
     }
 
