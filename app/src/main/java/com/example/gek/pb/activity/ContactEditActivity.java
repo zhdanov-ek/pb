@@ -174,7 +174,9 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()){
             case R.id.btnOk:
                 sendToServer();
-                //todo выставить фокус в первое поле после ввода
+                String mes = getResources().getString(R.string.mes_saved) + "\n" + etName.getText();
+                Toast.makeText(getBaseContext(), mes, Toast.LENGTH_SHORT).show();
+                finish();
                 break;
             case R.id.ibtnRemovePhoto:
                 if ((oldContact != null) &&(oldContact.getPhotoName().length() > 0)){
