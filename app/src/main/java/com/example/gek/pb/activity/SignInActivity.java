@@ -156,7 +156,7 @@ public class SignInActivity extends AppCompatActivity {
                 }
 
                 // Если наш юзер админ то запускаемся как админ, а иначе ищем юзера в белом списке
-                userEmail = auth.getCurrentUser().getEmail();
+                userEmail = auth.getCurrentUser().getEmail().toLowerCase();
                 if (userEmail.contentEquals(adminEmail)){
                     isCanRun = true;
                     isAdmin = true;

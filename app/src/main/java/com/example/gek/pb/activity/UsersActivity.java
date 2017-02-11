@@ -151,13 +151,9 @@ public class UsersActivity extends AppCompatActivity {
         });
 
 
-        // По окончанию работы с SearchView отображаем все слова в алфавитном порядке
-        // и в меню это отмечаем это в меню
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-//                MenuItem menuItem = menu.findItem(R.id.ab_sort_abc);
-//                menuItem.setChecked(true);
                 return false;
             }
         });
@@ -182,7 +178,7 @@ public class UsersActivity extends AppCompatActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             UserDialogFragment userDialogFragment =
                     UserDialogFragment.newInstance(emails);
-            userDialogFragment.show(fragmentManager, "user_GEK");
+            userDialogFragment.show(fragmentManager, "ADD_NEW_USER");
         }
     };
 }

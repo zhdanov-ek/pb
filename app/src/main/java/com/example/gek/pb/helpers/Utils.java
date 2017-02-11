@@ -45,7 +45,9 @@ public class Utils {
 
     public static void showAbout(Context ctx){
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        String message = ctx.getResources().getString(R.string.mes_about) + "\n\n" +
+        String message = ctx.getResources().getString(R.string.mes_about) + "\n" +
+                ctx.getResources().getString(R.string.mes_company) + "\n" +
+                "\n\n" +
                 ctx.getResources().getString(R.string.about_user) + ":\n" +
                 SignInActivity.userEmail;
         builder.setTitle(R.string.menu_about)

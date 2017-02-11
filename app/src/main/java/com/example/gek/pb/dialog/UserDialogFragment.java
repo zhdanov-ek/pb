@@ -40,25 +40,25 @@ public class UserDialogFragment extends DialogFragment {
 
     /** Создаем экземпляр диалога с передачей значений - редактирование сюществующей записи */
     public static UserDialogFragment newInstance(String email, String description, String key) {
-        UserDialogFragment rdf = new UserDialogFragment();
+        UserDialogFragment udf = new UserDialogFragment();
         Bundle args = new Bundle();
         args.putInt(Const.MODE, Const.MODE_EDIT);
         args.putString("email", email);
         args.putString("description", description);
         args.putString("key", key);
-        rdf.setArguments(args);
-        return rdf;
+        udf.setArguments(args);
+        return udf;
     }
 
 
     /** Создаем экземпляр диалога для создания новой записи */
     public static UserDialogFragment newInstance(ArrayList<String> emails) {
-        UserDialogFragment rdf = new UserDialogFragment();
+        UserDialogFragment udf = new UserDialogFragment();
         Bundle args = new Bundle();
         args.putInt(Const.MODE, Const.MODE_NEW);
         args.putStringArrayList(Const.EXTRA_EMAILS, emails);
-        rdf.setArguments(args);
-        return rdf;
+        udf.setArguments(args);
+        return udf;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class UserDialogFragment extends DialogFragment {
     DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            String email = etEmail.getText().toString();
+            String email = etEmail.getText().toString().toLowerCase();
             email = email.replace(" ", "");
             if ((email.isEmpty()) || (email.length() < 6)) {
                 //todo При не успешной валидации данных не закрывать диалог

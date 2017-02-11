@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">pb</string>
+    <string name="app_name">Ваше Здоровье</string>
 
     <string name="hint_name">Name</string>
     <string name="hint_position">Position</string>
@@ -34,8 +34,8 @@
     <string name="mes_register_admin_account">Admin account is not registered!</string>
     <string name="mes_user_not_founded">User not founded. Please contact to administrator of this program</string>
     <string name="mes_about">Corporate phone book</string>
-    <string name="mes_succes_auth">Authorization successful</string>
-    <string name="mes_error_auth">Error authentication. Try again.</string>
+    <string name="mes_succes_auth">Authentication successful</string>
+    <string name="mes_error_auth">Error authentication. Try again</string>
     <string name="mes_company">Vashe Zdorovie</string>
     <string name="about_user">Current user</string>
     <string name="mes_help">You can sign in only after administrator add your email in white list of users.\n

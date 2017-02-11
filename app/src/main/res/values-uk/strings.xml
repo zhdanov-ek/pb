@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ваше Здоров\'я</string>
+    <string name="about_user">Авторизований користувач</string>
+    <string name="confirm_remove_contact">Ви дійсно хочете видалити контакт?</string>
+    <string name="hint_cancel">Відмінити</string>
+    <string name="hint_description">Примітка</string>
+    <string name="hint_email">Поштова адреса</string>
+    <string name="hint_name">Ім\'я</string>
+    <string name="hint_ok">ОК</string>
+    <string name="hint_phone">Телефонний номер</string>
+    <string name="hint_position">Посада</string>
+    <string name="hint_remove">Видалити</string>
+    <string name="hint_restore">Відновити</string>
+    <string name="hint_signin">Увійти</string>
+    <string name="menu_about">Про програму</string>
+    <string name="menu_add_contact">Додати контакт</string>
+    <string name="menu_edit_contact">Редагувати контакт</string>
+    <string name="menu_list_users">Список користувачів</string>
+    <string name="menu_options">Налаштування</string>
+    <string name="menu_remove_contact">Видалити контакт</string>
+    <string name="menu_search">Пошук</string>
+    <string name="menu_share">Поділитися</string>
+    <string name="menu_sign_out">Вийти із программи</string>
+    <string name="mes_about">Корпоративний довідник</string>
+    <string name="mes_company">ТОВ ФФ \"Ваше Здоров\'я\"</string>
+    <string name="mes_error_auth">Помилка аутентифікації. Спробуйте ще раз</string>
+    <string name="mes_hello">Привіт</string>
+    <string name="mes_help">Ви зможете увійти тільки після того як повідомете адміністратору свій емейл</string>
+    <string name="mes_no_internet">Немає з\'єднання з інтернетом</string>
+    <string name="mes_no_records">Немає записів</string>
+    <string name="mes_register_admin_account">Обліковий запис адміністратора не вказано!</string>
+    <string name="mes_saved">Збережено</string>
+    <string name="mes_succes_auth">Аутентифікацію пройдено успішно</string>
+    <string name="mes_user_not_founded">Користувач не знайдений у списку дозволених. Зверніться до адміністратора</string>
+    <string name="mes_user_removed">Користувач успішно видалений</string>
+    <string name="title_add_user">Додати користувача</string>
+    <string name="title_edit_user">Редагувати користувача</string>
+</resources>

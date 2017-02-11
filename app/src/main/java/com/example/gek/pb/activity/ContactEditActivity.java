@@ -174,9 +174,8 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()){
             case R.id.btnOk:
                 sendToServer();
-                String mes = getResources().getString(R.string.mes_saved) + "\n" + etName.getText();
-                Toast.makeText(getBaseContext(), mes, Toast.LENGTH_SHORT).show();
-                finish();
+//                String mes = getResources().getString(R.string.mes_saved) + "\n" + etName.getText();
+//                Toast.makeText(getBaseContext(), mes, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ibtnRemovePhoto:
                 if ((oldContact != null) &&(oldContact.getPhotoName().length() > 0)){
@@ -296,13 +295,8 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                         db.child(Const.CHILD_CONTACTS).child(oldKey).setValue(newContact);
                         changedContact = newContact;
                     }
-                    fillValues(null);
                     progressBar.setVisibility(View.GONE);
-                    if (!isNewContact) {
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra(Const.EXTRA_CONTACT, changedContact);
-                        setResult(RESULT_OK, resultIntent);
-                    }
+                    passResult();
                 }
             });
 
@@ -330,15 +324,20 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
                 changedContact = newContact;
             }
             progressBar.setVisibility(View.GONE);
-            if (!isNewContact) {
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra(Const.EXTRA_CONTACT, changedContact);
-                setResult(RESULT_OK, resultIntent);
+            passResult();
                 //todo Toast for add new Contact is need
-            }
         }
     }
 
+    /** Отправляем сохраненный результат в активити просмотра для обновления данных*/
+    private void passResult(){
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(Const.EXTRA_CONTACT, changedContact);
+        setResult(RESULT_OK, resultIntent);
+        String mes = getResources().getString(R.string.mes_saved) + "\n" + etName.getText();
+        Toast.makeText(getBaseContext(), mes, Toast.LENGTH_LONG).show();
+        finish();
+    }
 
     /** Формируем имя для фотки из данных пользователя. Убираем нежелательные символы */
     private String makePhotoName(){
