@@ -278,7 +278,7 @@ public class ContactShowActivity extends AppCompatActivity {
         try {
             String uri = "tel:" + number;
             Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(uri));
-            //todo: Надо прописать проверку наличия разрешения на доступ к функциям вызова
+            //todo: Надо прописать проверку наличия разрешения на доступ к функциям вызова для API 23
              startActivity(callIntent);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), "Your call has failed...",

@@ -82,7 +82,6 @@ public class Utils {
     }
 
     /**  По первым трем цифрам определяет мобильного оператора возвращая его название */
-    //todo Заменить этот метод классом, который будет грузить картинку в вью
     public static String defineMobile(String num){
         String logo;
         String prefix = String.copyValueOf(num.toCharArray(), 0, 3);
