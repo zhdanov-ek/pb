@@ -5,6 +5,7 @@
     android:id="@+id/activity_sign_in"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_sign_in"
     tools:context="com.example.gek.pb.activity.SignInActivity">
 
 
@@ -20,6 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/font_size_large"
+            android:visibility="gone"
             tools:text="Text info fo messages and status"/>
 
         <Button
@@ -27,7 +29,8 @@
             style="@style/ButtonBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/hint_signin" />
+            android:text="@string/hint_signin"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnSignOut"
@@ -47,6 +50,7 @@
         android:layout_margin="@dimen/floating_button_layout_margin"
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_help"
+        android:visibility="invisible"
         app:fabSize="normal" />
 
 </FrameLayout>

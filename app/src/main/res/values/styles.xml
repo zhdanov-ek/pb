@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
+
     <style name="icon_simple">
         <item name="android:layout_marginRight">@dimen/activity_padding</item>
         <item name="android:layout_width">@dimen/icon_simple_size</item>

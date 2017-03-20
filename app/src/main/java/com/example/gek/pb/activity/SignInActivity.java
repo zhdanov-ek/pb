@@ -2,6 +2,7 @@ package com.example.gek.pb.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private TextView tvInfo;
     private Button btnSignOut, btnSignIn;
+    private FloatingActionButton fabHelp;
     private Context ctx;
 
     @Override
@@ -62,14 +64,14 @@ public class SignInActivity extends AppCompatActivity {
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                     FirebaseAuth.getInstance().signOut();
                     userEmail = "";
-                    btnSignIn.setVisibility(View.VISIBLE);
                     btnSignOut.setVisibility(View.GONE);
                     tvInfo.setText("");
                 }
             }
         });
 
-        findViewById(R.id.fabHelp).setOnClickListener(new View.OnClickListener() {
+        fabHelp = (FloatingActionButton) findViewById(R.id.fabHelp);
+        fabHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.showHelp(ctx);
@@ -84,9 +86,13 @@ public class SignInActivity extends AppCompatActivity {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             if (isCanRun) {
                 startMainActivity();
+                finish();
             } else {
                 initUser();
             }
+        } else {
+            btnSignIn.setVisibility(View.VISIBLE);
+            fabHelp.setVisibility(View.VISIBLE);
         }
     }
 
@@ -105,6 +111,7 @@ public class SignInActivity extends AppCompatActivity {
                 } else {
                     tvInfo.setText(R.string.mes_error_auth);
                 }
+                tvInfo.setVisibility(View.VISIBLE);
                 break;
             // ответ с главного окна (выйти из системы, закончить работу с программой)
             case Const.REQUEST_MAIN:
@@ -118,8 +125,10 @@ public class SignInActivity extends AppCompatActivity {
                                     isCanRun = false;
                                     isAdmin = false;
                                     tvInfo.setText("");
+                                    tvInfo.setVisibility(View.GONE);
                                     btnSignOut.setVisibility(View.GONE);
                                     btnSignIn.setVisibility(View.VISIBLE);
+                                    fabHelp.setVisibility(View.VISIBLE);
                                 }
                                 break;
                             case Const.ACTION_TURNOFF:
@@ -195,7 +204,9 @@ public class SignInActivity extends AppCompatActivity {
                 if (!isFound) {
                     String mes = userEmail + "\n" +getResources().getString(R.string.mes_user_not_founded);
                     tvInfo.setText(mes);
+                    tvInfo.setVisibility(View.VISIBLE);
                     btnSignOut.setVisibility(View.VISIBLE);
+                    fabHelp.setVisibility(View.VISIBLE);
                     btnSignIn.setVisibility(View.GONE);
                 } else {
                     isCanRun = true;
