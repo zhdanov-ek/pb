@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
 
     <application
         android:name=".data.MyApplication"
@@ -13,7 +15,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SignInActivity"
+        <activity
+            android:name=".activity.SignInActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -22,14 +25,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ContactEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UsersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ContactShowActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CallActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ContactEditActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.UsersActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.ContactShowActivity"
-            android:screenOrientation="portrait"/>
+
+        <receiver android:name=".receivers.CallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

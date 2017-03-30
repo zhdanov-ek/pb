@@ -38,7 +38,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class ContactShowActivity extends AppCompatActivity {
 
-    private static final String TAG = "GEK";
+    private static final String TAG = "CONTACT_SHOW";
     ImageView ivPhoto, ivRing;
     ImageView ivPhone, ivPhone2;
     TextView tvName, tvPosition, tvPhone, tvPhone2, tvEmail;

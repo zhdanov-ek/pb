@@ -15,7 +15,8 @@
     <color name="colorLightBlue">#b3e5fc</color>
 
 
-
     <color name="colorRed">#e53935</color>
     <color name="colorDarkRed">#b71c1c</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

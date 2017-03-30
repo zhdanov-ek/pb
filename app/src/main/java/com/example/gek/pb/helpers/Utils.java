@@ -127,4 +127,21 @@ public class Utils {
         }
         return result;
     }
+
+    public static Boolean isNumberOfContact(Contact contact, String number){
+        if ((number != null) && (number.length() > 0)) {
+            if ((contact.getPhone2() != null) && (contact.getPhone2().length() > 0)){
+                if (((number.contains(contact.getPhone()))) ||
+                        (number.contains(contact.getPhone2()))){
+                    return true;
+                }
+            } else {
+                if (number.contains(contact.getPhone())){
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
 }

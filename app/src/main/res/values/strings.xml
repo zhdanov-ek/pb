@@ -41,4 +41,8 @@
     <string name="mes_help">You can sign in only after administrator add your email in white list of users.\n
         Please send your email account  to system administrator of you company.</string>
 
+    <string name="title_activity_call">CallActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>
