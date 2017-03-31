@@ -37,9 +37,6 @@
         <activity
             android:name=".activity.ContactShowActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.CallActivity"
-            android:screenOrientation="portrait"/>
 
         <receiver android:name=".receivers.CallReceiver">
             <intent-filter>

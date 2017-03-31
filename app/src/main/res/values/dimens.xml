@@ -18,7 +18,6 @@
     <dimen name="icon_simple_size">40dp</dimen>
 
 
-
     <dimen name="icon_simple_margin_layout">20dp</dimen>
 
     <dimen name="font_size_small">12sp</dimen>
@@ -26,6 +25,9 @@
     <dimen name="font_size_large">20sp</dimen>
 
     <dimen name="floating_button_layout_margin">8dp</dimen>
+
+    <!-- CUSTOM TOAST FOR INPUT CALL -->
+    <dimen name="ava_input_call_size">75dp</dimen>
 
 
     <dimen name="button_padding">0dp</dimen>
