@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "15109174079-l37v6g7f20nn6fj63pldvunhgakhvd3l.apps.googleusercontent.com",
+          "client_id": "15109174079-trhjv7l5tcnqk6an79gg6sj4uou1e7bo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.gek.pb",
-            "certificate_hash": "2A78BEBC1B15D09F589443BEC93C10F0389BF359"
+            "certificate_hash": "f37e60c34ad07b7be6e153e43eb1d229ae262a73"
           }
         },
         {
