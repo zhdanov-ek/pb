@@ -1,8 +1,12 @@
 package com.example.gek.pb.receivers;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.gek.pb.R;
+import com.example.gek.pb.activity.ContactShowActivity;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
 import com.example.gek.pb.helpers.CircleTransform;
@@ -26,15 +31,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 /**
  * Receiver catch input call, check number in DB company and show Toast if found contact
  */
 
 public class CallReceiver extends PhonecallReceiver {
-    private static final String TAG = "CALLS: ";
-
-
-   
+    private static final String TAG = "CALL_RECEIVER: ";
 
     @Override
     protected void onIncomingCallReceived(final Context ctx, final String number, Date start) {
@@ -49,6 +54,7 @@ public class CallReceiver extends PhonecallReceiver {
 
                 for (Contact contact: contacts) {
                     if (Utils.isNumberOfContact(contact, number)){
+                        Utils.saveLastContact(contact, ctx);
                         showToast(contact, ctx);
                     }
                 }
@@ -88,8 +94,12 @@ public class CallReceiver extends PhonecallReceiver {
 
     @Override
     protected void onMissedCall(Context ctx, String number, Date start) {
-        // не приняв звонок нажали отмену
+        // пропущенный звонок
         Log.d(TAG, "onMissedCall: ");
+        Contact lastContact = Utils.readLastContact(ctx);
+        if (lastContact != null) {
+            showNotificationMissed(lastContact, ctx);
+        }
     }
 
     /** Show custom Toast with contact info */
@@ -123,5 +133,31 @@ public class CallReceiver extends PhonecallReceiver {
                 toast.show();
             }
         }, 2000);
+    }
+
+
+    /** Show notification if missed corporate contact */
+    private void showNotificationMissed(Contact contact, Context ctx){
+        if (Utils.isLastContact(ctx)){
+            String name = contact.getName();
+            String position = contact.getPosition();
+
+            NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
+            NotificationCompat.Builder ntfBuilder = new NotificationCompat.Builder(ctx.getApplicationContext());
+            ntfBuilder.setSmallIcon(R.drawable.ic_call);
+            ntfBuilder.setContentTitle(name);
+            ntfBuilder.setContentText(position);
+            ntfBuilder.setAutoCancel(true);
+            //ntfBuilder.setLargeIcon(BitmapFactory.decodeResource(getBaseContext().getResources(), R.drawable.ic_notification));
+            ntfBuilder.setTicker(name);
+
+            Intent intent = new Intent(ctx.getApplicationContext(), ContactShowActivity.class);
+            intent.putExtra(Const.EXTRA_CONTACT, contact);
+            PendingIntent pendingIntent = PendingIntent.getActivity(ctx.getApplicationContext(), 0, intent, 0);
+            ntfBuilder.setContentIntent(pendingIntent);
+            Notification notification = ntfBuilder.build();
+            // TODO: 01.04.17 make unique ID notification 
+            notificationManager.notify(232, notification);
+        }
     }
 }

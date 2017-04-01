@@ -30,5 +30,16 @@ public class Const {
     public static final int REQUEST_MAIN = 2;
     public static final int REQUEST_SIGN_IN = 101;
 
+    public static final String PREF_FILE_NAME = "preferences.txt";
+    public static final String PREF_CONTACT_NAME = "name";
+    public static final String PREF_CONTACT_POSITION = "position";
+    public static final String PREF_CONTACT_PHOTO_NAME = "photo_name";
+    public static final String PREF_CONTACT_PHOTO_URL = "photo_url";
+    public static final String PREF_CONTACT_PHONE = "phone";
+    public static final String PREF_CONTACT_PHONE2 = "phone2";
+    public static final String PREF_CONTACT_EMAIL = "email";
+    public static final String PREF_CONTACT_TIME = "date";
+
+
     public static final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 }
