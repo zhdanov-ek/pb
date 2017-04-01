@@ -25,12 +25,12 @@ import java.util.Date;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Вспомогательные методы
+ * Helpers methods
  */
 
 public class Utils {
-
     private static final String TAG = "UTILS";
+
 
     public static boolean hasInternet(Context context) {
         if (context == null) {
@@ -87,7 +87,7 @@ public class Utils {
         alert.show();
     }
 
-    /**  По первым трем цифрам определяет мобильного оператора возвращая его название */
+    /**  По первым трем цифрам определяем мобильного оператора возвращая его название */
     public static String defineMobile(String num){
         String logo;
         String prefix = String.copyValueOf(num.toCharArray(), 0, 3);
@@ -104,8 +104,6 @@ public class Utils {
 
         return logo;
     }
-
-
 
 
     /** Сортировка списка по именам */
@@ -150,6 +148,7 @@ public class Utils {
         return false;
     }
 
+    /** Write to preferences contact and date of call */
     public static void saveLastContact(Contact contact, Context ctx){
         SharedPreferences pref = ctx.getSharedPreferences(Const.PREF_FILE_NAME, MODE_PRIVATE);
         long date = new Date().getTime();
@@ -158,7 +157,6 @@ public class Utils {
                 .putString(Const.PREF_CONTACT_POSITION, contact.getPosition())
                 .putString(Const.PREF_CONTACT_PHONE, contact.getPhone())
                 .putLong(Const.PREF_CONTACT_TIME, date).apply();
-        Log.d(TAG, "saveLastContact: date = " + date);
         if ((contact.getPhone2() != null) && (contact.getPhone2().length() > 0)){
             pref.edit().putString(Const.PREF_CONTACT_PHONE2, contact.getPhone2()).apply();
         } else {
@@ -184,6 +182,7 @@ public class Utils {
         }
     }
 
+    /** Read contact */
     public static Contact readLastContact(Context ctx){
         SharedPreferences pref = ctx.getSharedPreferences(Const.PREF_FILE_NAME, MODE_PRIVATE);
         if (pref.contains(Const.PREF_CONTACT_NAME)){

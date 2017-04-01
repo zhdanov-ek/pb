@@ -26,8 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "11111";
+public class ContactsActivity extends AppCompatActivity {
+    private static final String TAG = "ACTIVITY_CONTACTS";
     private ArrayList<Contact> contacts;
     private ArrayList<Contact> searchContacts;
     private RecyclerView rv;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_contacts);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
 
@@ -184,8 +184,5 @@ public class MainActivity extends AppCompatActivity {
         setResult(RESULT_OK, intentSignOut);
         finish();
     }
-
-
-
 
 }

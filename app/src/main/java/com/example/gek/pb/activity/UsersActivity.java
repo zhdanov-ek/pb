@@ -36,21 +36,19 @@ import java.util.ArrayList;
 public class UsersActivity extends AppCompatActivity {
 
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-    private static final String TAG = "11111";
+    private static final String TAG = "ACTIVITY_USERS";
 
     private ArrayList<User> users;
     private ArrayList<String> emails;
     private RecyclerView rv;
     private UsersAdapter usersAdapter;
     private Context ctx = this;
-    private FloatingActionButton fab;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
-
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
@@ -59,8 +57,7 @@ public class UsersActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL ));
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(fabListener);
+        findViewById(R.id.fab).setOnClickListener(fabListener);
 
         users = new ArrayList<>();
         emails = new ArrayList<>();

@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.ContactsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ContactEditActivity"

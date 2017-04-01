@@ -36,19 +36,18 @@ import java.util.Calendar;
 
 public class ContactEditActivity extends AppCompatActivity implements View.OnClickListener{
 
-    ProgressBar progressBar;
-    Button btnOk;
-    ImageButton ibtnRemovePhoto;
-    ImageView ivPhoto;
-    EditText etName;
-    EditText etPosition;
-    EditText etPhone;
-    EditText etPhone2;
-    EditText etEmail;
+    private ProgressBar progressBar;
+    private Button btnOk;
+    private ImageButton ibtnRemovePhoto;
+    private ImageView ivPhoto;
+    private EditText etName;
+    private EditText etPosition;
+    private EditText etPhone;
+    private EditText etPhone2;
+    private EditText etEmail;
 
     private DatabaseReference db;
     private static final int REQUEST_LOAD_IMG = 1;
-
 
     private StorageReference folderRef;
 

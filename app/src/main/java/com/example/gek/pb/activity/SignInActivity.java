@@ -222,7 +222,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void startMainActivity(){
-        Intent intentMainActivity = new Intent(this, MainActivity.class);
+        Intent intentMainActivity = new Intent(this, ContactsActivity.class);
         startActivityForResult(intentMainActivity, Const.REQUEST_MAIN);
     }
 }
