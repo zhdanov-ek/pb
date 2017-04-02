@@ -45,7 +45,10 @@
     <string name="mes_email_already_exist">Email %1$s already exists</string>
     <string name="mes_user_added">User %1$s added</string>
     <string name="mes_email_incorrect">Value EMAIL is incorrect</string>
-
+    <string name="mes_permission_call_not_granded">Permission for call not granded</string>
+    
     <string name="pref_detect_calls">Detect incoming calls</string>
+
+    <string name="action_settings">Open settings</string>
 
 </resources>

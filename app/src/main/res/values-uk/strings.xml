@@ -41,4 +41,6 @@
     <string name="mes_user_added">Користувач %1$s доданий</string>
     <string name="mes_email_already_exist">Емейл %1$s вже є у списку</string>
     <string name="mes_email_incorrect">Не вірно вказано значення EMAIL</string>
+    <string name="action_settings">Відкрити налаштування</string>
+    <string name="mes_permission_call_not_granded">Немає дозволу для роботи з дзвінками</string>
 </resources>

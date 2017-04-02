@@ -29,6 +29,7 @@ public class Const {
     public static final int REQUEST_EDIT_CONTACT = 1;
     public static final int REQUEST_MAIN = 2;
     public static final int REQUEST_SIGN_IN = 101;
+    public static final int REQUEST_CODE_CALL_PHONE = 1001;
 
     public static final String PREF_FILE_NAME = "preferences.txt";
     public static final String PREF_CONTACT_NAME = "name";
@@ -41,8 +42,6 @@ public class Const {
 
     public static final String PREF_CONTACT_TIME = "date";
     public static final String PREF_DETECT_CALL = "detect_call";
-
-
 
     public static final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 }
