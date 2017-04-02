@@ -7,11 +7,9 @@ import android.net.Uri;
 
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -36,14 +32,37 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class ContactShowActivity extends AppCompatActivity {
+public class ContactShowActivity extends PermissionsActivity {
 
     private static final String TAG = "CONTACT_SHOW";
-    ImageView ivPhoto, ivRing;
-    ImageView ivPhone, ivPhone2;
-    TextView tvName, tvPosition, tvPhone, tvPhone2, tvEmail;
-    Contact openContact;
-    LinearLayout llPhone, llPhone2, llEmail;
+    private ImageView ivPhoto, ivRing;
+    private ImageView ivPhone, ivPhone2;
+    private TextView tvName, tvPosition, tvPhone, tvPhone2, tvEmail;
+    private Contact openContact;
+    private LinearLayout llPhone, llPhone2, llEmail;
+    private String mNumber;
+
+
+    @Override
+    void setViewForSnackbar(View v) {
+        viewForSnackbar = v;
+    }
+
+    @Override
+    void workIfPermissionsGranded() {
+        if (mNumber != null){
+            String uri = "tel:" + mNumber;
+            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(uri));
+            startActivity(callIntent);
+        }
+        mNumber = null;
+    }
+
+    @Override
+    void workIfPermissionsNotGranded() {
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +74,6 @@ public class ContactShowActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
-
 
         llPhone = (LinearLayout) findViewById(R.id.llPhone);
         llPhone2 = (LinearLayout) findViewById(R.id.llPhone2);
@@ -96,65 +114,12 @@ public class ContactShowActivity extends AppCompatActivity {
 
         openContact = getIntent().getParcelableExtra(Const.EXTRA_CONTACT);
         fillValues(openContact);
+        setViewForSnackbar(llPhone);
 
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_contact_show, menu);
 
-        // Находим наш пункт меню и с помощью хелпера MenuItemCompat привязываем наш экшн провайдер
-        MenuItem menuItem = menu.findItem(R.id.ab_share_item);
-        ShareActionProvider shareActionProvider = new ShareActionProvider(this);
-        MenuItemCompat.setActionProvider(menuItem, shareActionProvider);
-        shareActionProvider.setShareIntent(createShareContactIntent());
-
-        String addContact = getResources().getString(R.string.menu_add_contact);
-        String editContact = getResources().getString(R.string.menu_edit_contact);
-        String removeContact = getResources().getString(R.string.menu_remove_contact);
-
-        for (int i = 0; i < menu.size(); i++) {
-            if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
-                menu.getItem(i).setVisible(false);
-            }
-
-            if ((menu.getItem(i).getTitle().toString().contentEquals(editContact)) &&
-                    (! SignInActivity.isAdmin)){
-                menu.getItem(i).setVisible(false);
-            }
-
-            if ((menu.getItem(i).getTitle().toString().contentEquals(removeContact)) &&
-                    (! SignInActivity.isAdmin)){
-                menu.getItem(i).setVisible(false);
-            }
-        }
-        return true;
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.ab_edit:
-                Intent editContactIntent = new Intent(this, ContactEditActivity.class);
-                editContactIntent.putExtra(Const.MODE, Const.MODE_EDIT);
-                editContactIntent.putExtra(Const.EXTRA_CONTACT, openContact);
-                startActivityForResult(editContactIntent, Const.REQUEST_EDIT_CONTACT);
-                break;
-            case R.id.ab_remove:
-                removeContact();
-                break;
-            case R.id.ab_options:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.ab_about:
-                Utils.showAbout(this);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     /** Создание интента с текстом текущего контакта для передачи в ShareActionProvider */
     private Intent createShareContactIntent() {
@@ -278,18 +243,10 @@ public class ContactShowActivity extends AppCompatActivity {
     }
 
 
+    /** Save number and check permissions: if they granded we will make a call */
     private void makeCall(String number){
-        try {
-            String uri = "tel:" + number;
-            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(uri));
-            //todo: Надо прописать проверку наличия разрешения на доступ к функциям вызова для API 23
-             startActivity(callIntent);
-        } catch (Exception e) {
-            Toast.makeText(getBaseContext(), "Your call has failed...",
-                    Toast.LENGTH_LONG).show();
-            Log.d(TAG, "makeCall: " + e);
-            e.printStackTrace();
-        }
+        mNumber = number;
+        verifyCallPermissions();
     }
 
     private void sendEmail(String name, String email){
@@ -306,4 +263,63 @@ public class ContactShowActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_contact_show, menu);
+
+        // Находим наш пункт меню и с помощью хелпера MenuItemCompat привязываем наш экшн провайдер
+        MenuItem menuItem = menu.findItem(R.id.ab_share_item);
+        ShareActionProvider shareActionProvider = new ShareActionProvider(this);
+        MenuItemCompat.setActionProvider(menuItem, shareActionProvider);
+        shareActionProvider.setShareIntent(createShareContactIntent());
+
+        String addContact = getResources().getString(R.string.menu_add_contact);
+        String editContact = getResources().getString(R.string.menu_edit_contact);
+        String removeContact = getResources().getString(R.string.menu_remove_contact);
+
+        for (int i = 0; i < menu.size(); i++) {
+            if (menu.getItem(i).getTitle().toString().contentEquals(addContact)) {
+                menu.getItem(i).setVisible(false);
+            }
+
+            if ((menu.getItem(i).getTitle().toString().contentEquals(editContact)) &&
+                    (! SignInActivity.isAdmin)){
+                menu.getItem(i).setVisible(false);
+            }
+
+            if ((menu.getItem(i).getTitle().toString().contentEquals(removeContact)) &&
+                    (! SignInActivity.isAdmin)){
+                menu.getItem(i).setVisible(false);
+            }
+        }
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ab_edit:
+                Intent editContactIntent = new Intent(this, ContactEditActivity.class);
+                editContactIntent.putExtra(Const.MODE, Const.MODE_EDIT);
+                editContactIntent.putExtra(Const.EXTRA_CONTACT, openContact);
+                startActivityForResult(editContactIntent, Const.REQUEST_EDIT_CONTACT);
+                break;
+            case R.id.ab_remove:
+                removeContact();
+                break;
+            case R.id.ab_options:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.ab_about:
+                Utils.showAbout(this);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 }
