@@ -187,8 +187,6 @@ public class ContactShowActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.hint_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //todo повесить лисенеры на отслеживание успешного и не успешного удаления записи
-
                 // Получаем ссылку на наше хранилище и удаляем фото по названию
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl(Const.STORAGE);
@@ -199,6 +197,9 @@ public class ContactShowActivity extends AppCompatActivity {
                 // Получаем ссылку на базу данных и удаляем контакт по ключу загруженного контакта
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                 db.child(Const.CHILD_CONTACTS).child(openContact.getKey()).removeValue();
+                String mes = String.format(getResources().getString(R.string.mes_contact_removed),
+                        openContact.getName());
+                Toast.makeText(getBaseContext(), mes, Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

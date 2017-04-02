@@ -156,8 +156,10 @@ public class CallReceiver extends PhonecallReceiver {
             PendingIntent pendingIntent = PendingIntent.getActivity(ctx.getApplicationContext(), 0, intent, 0);
             ntfBuilder.setContentIntent(pendingIntent);
             Notification notification = ntfBuilder.build();
-            // TODO: 01.04.17 make unique ID notification 
-            notificationManager.notify(232, notification);
+
+            // make random id
+            int idNotif = (int)(new Date().getTime());
+            notificationManager.notify(idNotif, notification);
         }
     }
 }

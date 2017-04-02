@@ -324,7 +324,6 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
             }
             progressBar.setVisibility(View.GONE);
             passResult();
-                //todo Toast for add new Contact is need
         }
     }
 

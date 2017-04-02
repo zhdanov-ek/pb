@@ -40,6 +40,6 @@
     <string name="about_user">Current user</string>
     <string name="mes_help">You can sign in only after administrator add your email in white list of users.\n
         Please send your email account  to system administrator of you company.</string>
-
+    <string name="mes_contact_removed">Contact %1$s removed</string>
 
 </resources>

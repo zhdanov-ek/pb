@@ -36,4 +36,5 @@
     <string name="title_add_user">Добавить пользователя</string>
     <string name="title_edit_user">Изменить пользователя</string>
     <string name="about_user">Авторизированный пользователь</string>
+    <string name="mes_contact_removed">Контакт %1$s удален</string>
 </resources>

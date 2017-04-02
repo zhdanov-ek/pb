@@ -20,16 +20,19 @@
 
     <style name="ButtonBlue" parent="@android:style/Widget.Button.Small">
         <item name="android:background">@drawable/bg_button_blue</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">@dimen/button_width</item>
         <item name="android:textColor">@color/colorTextButton</item>
-        <item name="android:textSize">@dimen/font_size_large</item>
-        <item name="android:padding">@dimen/button_padding</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:paddingLeft">@dimen/button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/button_padding_horizontal</item>
     </style>
 
     <style name="ButtonRed" parent="@android:style/Widget.Button.Small">
         <item name="android:background">@drawable/bg_button_red</item>
         <item name="android:textColor">@color/colorTextButton</item>
         <item name="android:textSize">@dimen/font_size_large</item>
-        <item name="android:padding">@dimen/button_padding</item>
+        <item name="android:padding">@dimen/button_small_padding</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
