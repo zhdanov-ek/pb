@@ -66,8 +66,7 @@ public class CallReceiver extends PhonecallReceiver {
             }
         };
 
-        // устанавливаем слушатель на изменения в нашей базе в разделе контактов
-        Const.db.child(Const.CHILD_CONTACTS).addValueEventListener(contactCardListener);
+        Const.db.child(Const.CHILD_CONTACTS).addListenerForSingleValueEvent(contactCardListener);
         Log.d(TAG, "onIncomingCallReceived: " + number);
     }
 

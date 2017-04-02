@@ -38,6 +38,10 @@
             android:name=".activity.ContactShowActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:screenOrientation="portrait" />
+
         <receiver android:name=".receivers.CallReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -46,6 +50,7 @@
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
+
 
     </application>
 

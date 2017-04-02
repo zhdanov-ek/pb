@@ -156,6 +156,9 @@ public class ContactsActivity extends AppCompatActivity {
             case R.id.ab_users:
                 startActivity(new Intent(this, UsersActivity.class));
                 break;
+            case R.id.ab_options:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
             case R.id.ab_sign_out:
                 signOut();
                 break;

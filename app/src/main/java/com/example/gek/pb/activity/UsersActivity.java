@@ -1,6 +1,7 @@
 package com.example.gek.pb.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -160,6 +161,9 @@ public class UsersActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.ab_options:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
             case R.id.ab_about:
                 Utils.showAbout(this);
                 break;

@@ -38,7 +38,10 @@ public class Const {
     public static final String PREF_CONTACT_PHONE = "phone";
     public static final String PREF_CONTACT_PHONE2 = "phone2";
     public static final String PREF_CONTACT_EMAIL = "email";
+
     public static final String PREF_CONTACT_TIME = "date";
+    public static final String PREF_DETECT_CALL = "detect_call";
+
 
 
     public static final DatabaseReference db = FirebaseDatabase.getInstance().getReference();

@@ -213,5 +213,22 @@ public class Utils {
         return false;
     }
 
+    /** Get preferences for detect inout call in CallReceiver*/
+    public static Boolean isNeedDetectCall(Context ctx){
+        SharedPreferences pref = ctx.getSharedPreferences(Const.PREF_FILE_NAME, MODE_PRIVATE);
+        if ((pref.contains(Const.PREF_DETECT_CALL)) &&
+            (pref.getBoolean(Const.PREF_DETECT_CALL, false))){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /** Set value to preferences */
+    public static void setNeedDetectCall(Boolean choosedValue, Context ctx){
+        SharedPreferences pref = ctx.getSharedPreferences(Const.PREF_FILE_NAME, MODE_PRIVATE);
+        pref.edit().putBoolean(Const.PREF_DETECT_CALL, choosedValue).apply();
+    }
+
 
 }

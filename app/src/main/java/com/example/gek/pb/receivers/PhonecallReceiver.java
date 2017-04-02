@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.TelephonyManager;
 
+import com.example.gek.pb.helpers.Utils;
+
 public abstract class PhonecallReceiver extends BroadcastReceiver {
 
-    //The receiver will be recreated whenever android feels like it.
+    // The receiver will be recreated whenever android feels like it.
     // We need a static variable to remember data between instantiations
 
     private static int lastState = TelephonyManager.CALL_STATE_IDLE;
@@ -19,12 +21,17 @@ public abstract class PhonecallReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // check user settings of application and break if FALSE
+        if (!Utils.isNeedDetectCall(context)) {
+            return;
+        }
 
-        //We listen to two intents.  The new outgoing call only tells us of an outgoing call.  We use it to get the number.
+        // We listen to two intents.  The new outgoing call only tells us of an outgoing call.
+        // We use it to get the number.
         if (intent.getAction().equals("android.intent.action.NEW_OUTGOING_CALL")) {
             savedNumber = intent.getExtras().getString("android.intent.extra.PHONE_NUMBER");
         }
-        else{
+        else {
             String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
             String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
             int state = 0;

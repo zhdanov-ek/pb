@@ -141,6 +141,9 @@ public class ContactEditActivity extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.ab_options:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
             case R.id.ab_about:
                 Utils.showAbout(this);
                 break;
