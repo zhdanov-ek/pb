@@ -6,7 +6,7 @@
     <item android:id="@+id/ab_search"
         android:title="@string/menu_search"
         android:icon="@android:drawable/ic_search_category_default"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <group

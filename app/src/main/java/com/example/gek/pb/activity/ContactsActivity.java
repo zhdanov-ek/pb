@@ -32,6 +32,7 @@ public class ContactsActivity extends AppCompatActivity {
     private ArrayList<Contact> searchContacts;
     private RecyclerView rv;
     private ContactsAdapter contactsAdapter;
+    private ValueEventListener contactCardListener;
     private Context ctx = this;
 
 
@@ -64,7 +65,7 @@ public class ContactsActivity extends AppCompatActivity {
         // Описываем слушатель, который возвращает в программу весь список данных,
         // которые находятся в child(CHILD_CONTACTS)
         // В итоге при любом изменении вся база перезаливается с БД в программу
-        ValueEventListener contactCardListener = new ValueEventListener() {
+        contactCardListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long num = dataSnapshot.getChildrenCount();
@@ -188,4 +189,11 @@ public class ContactsActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (contactCardListener != null){
+            Const.db.child(Const.CHILD_CONTACTS).removeEventListener(contactCardListener);
+        }
+        super.onDestroy();
+    }
 }

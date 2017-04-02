@@ -37,4 +37,8 @@
     <string name="title_add_user">Додати користувача</string>
     <string name="title_edit_user">Редагувати користувача</string>
     <string name="mes_contact_removed">Контакт %1$s видалено</string>
+    <string name="pref_detect_calls">Обробляти вхiднi дзвiнки</string>
+    <string name="mes_user_added">Користувач %1$s доданий</string>
+    <string name="mes_email_already_exist">Емейл %1$s вже є у списку</string>
+    <string name="mes_email_incorrect">Не вірно вказано значення EMAIL</string>
 </resources>

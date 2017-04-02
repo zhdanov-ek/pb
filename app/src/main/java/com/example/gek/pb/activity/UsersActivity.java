@@ -39,11 +39,12 @@ public class UsersActivity extends AppCompatActivity {
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     private static final String TAG = "ACTIVITY_USERS";
 
-    private ArrayList<User> users;
+    private ArrayList<User> users, searchUsers;
     private ArrayList<String> emails;
     private RecyclerView rv;
     private UsersAdapter usersAdapter;
     private Context ctx = this;
+    private ValueEventListener contactCardListener;
 
 
     @Override
@@ -65,7 +66,7 @@ public class UsersActivity extends AppCompatActivity {
         // Описываем слушатель, который возвращает в программу весь список данных,
         // которые находятся в child(CHILD_USERS)
         // В итоге при любом изменении вся база перезаливается с БД в программу
-        ValueEventListener contactCardListener = new ValueEventListener() {
+        contactCardListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long num = dataSnapshot.getChildrenCount();
@@ -81,6 +82,7 @@ public class UsersActivity extends AppCompatActivity {
                 if (users.size() == 0) {
                     Toast.makeText(ctx, R.string.mes_no_records, Toast.LENGTH_LONG).show();
                 }
+                Utils.sortUsers(users);
                 usersAdapter = new UsersAdapter(ctx, users, getSupportFragmentManager());
                 rv.setAdapter(usersAdapter);
             }
@@ -94,6 +96,7 @@ public class UsersActivity extends AppCompatActivity {
         // устанавливаем слушатель на изменения в нашей базе в разделе контактов
         db.child(Const.CHILD_USERS).addValueEventListener(contactCardListener);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,23 +130,9 @@ public class UsersActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Query query = db.child(Const.CHILD_USERS).orderByChild("email").startAt(newText);
-                query.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            for (DataSnapshot item: dataSnapshot.getChildren()) {
-                                Log.d(TAG, "onDataChange: " + item.child("email").getValue().toString());
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                Log.d(TAG, "onQueryTextChange: " + newText);
+                searchUsers = Utils.searchUsers(users, newText);
+                usersAdapter = new UsersAdapter(ctx, searchUsers, getSupportFragmentManager());
+                rv.setAdapter(usersAdapter);
                 return false;
             }
         });
@@ -182,4 +171,12 @@ public class UsersActivity extends AppCompatActivity {
             userDialogFragment.show(fragmentManager, "ADD_NEW_USER");
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        if (contactCardListener != null){
+            db.child(Const.CHILD_USERS).removeEventListener(contactCardListener);
+        }
+        super.onDestroy();
+    }
 }

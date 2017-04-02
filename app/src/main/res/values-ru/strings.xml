@@ -37,4 +37,8 @@
     <string name="title_edit_user">Изменить пользователя</string>
     <string name="about_user">Авторизированный пользователь</string>
     <string name="mes_contact_removed">Контакт %1$s удален</string>
+    <string name="pref_detect_calls">Определять входящие вызовы</string>
+    <string name="mes_user_added">Пользователь %1$s успешно добавлен</string>
+    <string name="mes_email_already_exist">Емейл %1$s уже есть в списке</string>
+    <string name="mes_email_incorrect">Не правильно указано значение EMAIL</string>
 </resources>

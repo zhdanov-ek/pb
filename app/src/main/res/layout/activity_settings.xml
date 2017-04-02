@@ -17,8 +17,7 @@
             android:id="@+id/switchCallReceiver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Определять входящие звонки" />
-
+            android:text="@string/pref_detect_calls" />
 
     </LinearLayout>
 

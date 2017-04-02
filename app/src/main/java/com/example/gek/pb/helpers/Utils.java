@@ -15,6 +15,7 @@ import com.example.gek.pb.R;
 import com.example.gek.pb.activity.SignInActivity;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
+import com.example.gek.pb.data.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -112,14 +113,28 @@ public class Utils {
     }
 
     /** Вспомогательный класс для сравнения объектов по конкретным полям */
-    public static class NameContactComparator implements Comparator<Contact> {
+    private static class NameContactComparator implements Comparator<Contact> {
         @Override
         public int compare(Contact c1, Contact c2) {
             return c1.getName().compareTo(c2.getName());
         }
     }
 
-    /** Возвращает отобранный список по указанному тексту */
+
+    /** Сортировка списка по email */
+    public static void sortUsers(ArrayList<User> inputList){
+        Collections.sort(inputList, new EmailUserComparator());
+    }
+
+    /** Вспомогательный класс для сравнения объектов по email */
+    private static class EmailUserComparator implements Comparator<User> {
+        @Override
+        public int compare(User u1, User u2) {
+            return u1.getEmail().compareTo(u2.getEmail());
+        }
+    }
+
+    /** Возвращает отобранный список контактов по указанному тексту */
     public static ArrayList<Contact> searchContacts(ArrayList<Contact> list, String text){
         ArrayList<Contact> result = new ArrayList<>();
         for (Contact contact: list) {
@@ -127,6 +142,19 @@ public class Utils {
                     (contact.getPosition().toLowerCase().contains(text.toLowerCase())))
             {
                 result.add(contact);
+            }
+        }
+        return result;
+    }
+
+    /** Возвращает отобранный список пользователей по указанному тексту */
+    public static ArrayList<User> searchUsers(ArrayList<User> list, String text){
+        ArrayList<User> result = new ArrayList<>();
+        for (User user: list) {
+            if ((user.getEmail().toLowerCase().contains(text.toLowerCase())) ||
+                    (user.getDescription().toLowerCase().contains(text.toLowerCase())))
+            {
+                result.add(user);
             }
         }
         return result;

@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gek.pb.R;
@@ -34,18 +32,21 @@ public class UserDialogFragment extends DialogFragment {
     private int mode;
     private ArrayList<String> emails;
 
-    EditText etEmail, etDescription;
+    private EditText etEmail, etDescription;
 
-    private static final String TAG = "GEK";
+    private static final String TAG = "EDIT_USER";
+    private static final String KEY = "key";
+    private static final String DESCRIPTION = "description";
+    private static final String EMAIL = "email";
 
     /** Создаем экземпляр диалога с передачей значений - редактирование сюществующей записи */
     public static UserDialogFragment newInstance(String email, String description, String key) {
         UserDialogFragment udf = new UserDialogFragment();
         Bundle args = new Bundle();
         args.putInt(Const.MODE, Const.MODE_EDIT);
-        args.putString("email", email);
-        args.putString("description", description);
-        args.putString("key", key);
+        args.putString(EMAIL, email);
+        args.putString(DESCRIPTION, description);
+        args.putString(KEY, key);
         udf.setArguments(args);
         return udf;
     }
@@ -66,9 +67,9 @@ public class UserDialogFragment extends DialogFragment {
         mode = getArguments().getInt(Const.MODE);
         String title;
         if (mode == Const.MODE_EDIT){
-            this.email = getArguments().getString("email");
-            this.description = getArguments().getString("description");
-            this.key = getArguments().getString("key");
+            this.email = getArguments().getString(EMAIL);
+            this.description = getArguments().getString(DESCRIPTION);
+            this.key = getArguments().getString(KEY);
             title = getResources().getString(R.string.title_edit_user);
         } else {
             this.email = "";
@@ -129,14 +130,18 @@ public class UserDialogFragment extends DialogFragment {
             if ((email.isEmpty()) || (email.length() < 6)) {
                 //todo При не успешной валидации данных не закрывать диалог
                 // http://stackoverflow.com/questions/2620444/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked
-                Toast.makeText(getContext(), "Value EMAIL is incorrect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),
+                        getContext().getString(R.string.mes_email_incorrect),
+                        Toast.LENGTH_SHORT).show();
             } else {
                 switch (mode) {
                     case Const.MODE_NEW:
                         if (isNewEmail(email, emails)) {
                             saveUser(email, etDescription.getText().toString(), key);
                         } else {
-                            Toast.makeText(getContext(), "Entered " + email + " finded in list.", Toast.LENGTH_SHORT).show();
+                            String mes = String.format(getResources().getString(R.string.mes_email_already_exist),
+                                    email);
+                            Toast.makeText(getContext(), mes, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case Const.MODE_EDIT:
@@ -158,7 +163,9 @@ public class UserDialogFragment extends DialogFragment {
             String newKey = db.child(Const.CHILD_USERS).push().getKey();
             user.setKey(newKey);
             db.child(Const.CHILD_USERS).child(newKey).setValue(user);
-            Toast.makeText(getContext(), "New  " + email + " writed", Toast.LENGTH_SHORT).show();
+            String mes = String.format(getResources().getString(R.string.mes_user_added),
+                    email);
+            Toast.makeText(getContext(), mes, Toast.LENGTH_SHORT).show();
         } else {
             user.setKey(key);
             db.child(Const.CHILD_USERS).child(key).setValue(user);

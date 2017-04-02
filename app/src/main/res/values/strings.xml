@@ -42,4 +42,10 @@
         Please send your email account  to system administrator of you company.</string>
     <string name="mes_contact_removed">Contact %1$s removed</string>
 
+    <string name="mes_email_already_exist">Email %1$s already exists</string>
+    <string name="mes_user_added">User %1$s added</string>
+    <string name="mes_email_incorrect">Value EMAIL is incorrect</string>
+
+    <string name="pref_detect_calls">Detect incoming calls</string>
+
 </resources>
