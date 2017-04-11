@@ -24,7 +24,7 @@
     <string name="mes_about">Корпоративный справочник</string>
     <string name="mes_company">ООО ФФ \"Ваше Здоровье\"</string>
     <string name="mes_error_auth">Ошибка аутентификации. Попробуйте еще раз</string>
-    <string name="mes_hello">Привет</string>
+    <string name="mes_hello">Добрый день</string>
     <string name="mes_help">Вы сможете зайти только после того как администратору сообщите свой емейл</string>
     <string name="mes_no_internet">Нет соединения с интернетом</string>
     <string name="mes_no_records">Нет записей</string>

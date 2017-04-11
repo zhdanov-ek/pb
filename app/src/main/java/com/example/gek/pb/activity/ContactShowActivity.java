@@ -191,12 +191,11 @@ public class ContactShowActivity extends PermissionsActivity {
             Glide.with(this)
                     .load(contact.getPhotoUrl())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .error(R.drawable.person_default)
+                    .error(R.drawable.person_default_oval)
                     .transform(new CircleTransform(this))
                     .into(ivPhoto);
         } else {
-            ivPhoto.setImageResource(R.drawable.person_default);
-            ivRing.setVisibility(View.GONE);
+            ivPhoto.setImageResource(R.drawable.person_default_oval);
         }
         tvName.setText(contact.getName());
         tvPosition.setText(contact.getPosition());
