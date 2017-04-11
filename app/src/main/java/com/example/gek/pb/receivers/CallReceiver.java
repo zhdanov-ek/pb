@@ -40,10 +40,12 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class CallReceiver extends PhonecallReceiver {
     private static final String TAG = "CALL_RECEIVER: ";
+    private ValueEventListener mContactCardListener;
+    private static Contact mLastContact;
 
     @Override
     protected void onIncomingCallReceived(final Context ctx, final String number, Date start) {
-        ValueEventListener contactCardListener = new ValueEventListener() {
+        mContactCardListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<Contact> contacts = new ArrayList<>();
@@ -54,8 +56,10 @@ public class CallReceiver extends PhonecallReceiver {
 
                 for (Contact contact: contacts) {
                     if (Utils.isNumberOfContact(contact, number)){
-                        Utils.saveLastContact(contact, ctx);
+                        mLastContact = contact;
                         showToast(contact, ctx);
+                        Const.db.child(Const.CHILD_CONTACTS).removeEventListener(mContactCardListener);
+                        Log.d(TAG, "onDataChange: remove listener");
                     }
                 }
             }
@@ -66,7 +70,8 @@ public class CallReceiver extends PhonecallReceiver {
             }
         };
 
-        Const.db.child(Const.CHILD_CONTACTS).addListenerForSingleValueEvent(contactCardListener);
+        Const.db.child(Const.CHILD_CONTACTS).addValueEventListener(mContactCardListener);
+        Log.d(TAG, "onIncomingCallReceived: setListener");
         Log.d(TAG, "onIncomingCallReceived: " + number);
     }
 
@@ -94,10 +99,9 @@ public class CallReceiver extends PhonecallReceiver {
     @Override
     protected void onMissedCall(Context ctx, String number, Date start) {
         // пропущенный звонок
-        Log.d(TAG, "onMissedCall: ");
-        Contact lastContact = Utils.readLastContact(ctx);
-        if (lastContact != null) {
-            showNotificationMissed(lastContact, ctx);
+        Log.d(TAG, "onMissedCall: mLastContact = " + mLastContact);
+        if ((mLastContact != null) && (Utils.isNumberOfContact(mLastContact, number)))  {
+            showNotificationMissed(mLastContact, ctx);
         }
     }
 
@@ -137,28 +141,27 @@ public class CallReceiver extends PhonecallReceiver {
 
     /** Show notification if missed corporate contact */
     private void showNotificationMissed(Contact contact, Context ctx){
-        if (Utils.isLastContact(ctx)){
-            String name = contact.getName();
-            String position = contact.getPosition();
+        String name = contact.getName();
+        String position = contact.getPosition();
 
-            NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
-            NotificationCompat.Builder ntfBuilder = new NotificationCompat.Builder(ctx.getApplicationContext());
-            ntfBuilder.setSmallIcon(R.drawable.ic_call);
-            ntfBuilder.setContentTitle(name);
-            ntfBuilder.setContentText(position);
-            ntfBuilder.setAutoCancel(true);
-            //ntfBuilder.setLargeIcon(BitmapFactory.decodeResource(getBaseContext().getResources(), R.drawable.ic_notification));
-            ntfBuilder.setTicker(name);
+        NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
+        NotificationCompat.Builder ntfBuilder = new NotificationCompat.Builder(ctx.getApplicationContext());
+        ntfBuilder.setSmallIcon(R.drawable.ic_call);
+        ntfBuilder.setContentTitle(name);
+        ntfBuilder.setContentText(position);
+        ntfBuilder.setAutoCancel(true);
+        //ntfBuilder.setLargeIcon(BitmapFactory.decodeResource(getBaseContext().getResources(), R.drawable.ic_notification));
+        ntfBuilder.setTicker(name);
 
-            Intent intent = new Intent(ctx.getApplicationContext(), ContactShowActivity.class);
-            intent.putExtra(Const.EXTRA_CONTACT, contact);
-            PendingIntent pendingIntent = PendingIntent.getActivity(ctx.getApplicationContext(), 0, intent, 0);
-            ntfBuilder.setContentIntent(pendingIntent);
-            Notification notification = ntfBuilder.build();
+        Intent intent = new Intent(ctx.getApplicationContext(), ContactShowActivity.class);
+        intent.putExtra(Const.EXTRA_CONTACT, contact);
+        PendingIntent pendingIntent = PendingIntent.getActivity(ctx.getApplicationContext(), 0, intent, 0);
+        ntfBuilder.setContentIntent(pendingIntent);
+        Notification notification = ntfBuilder.build();
 
-            // make random id
-            int idNotif = (int)(new Date().getTime());
-            notificationManager.notify(idNotif, notification);
-        }
+        // make random id
+        int idNotif = (int)(new Date().getTime());
+        notificationManager.notify(idNotif, notification);
+
     }
 }
