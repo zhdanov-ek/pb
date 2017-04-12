@@ -15,6 +15,17 @@
         android:gravity="center"
         android:orientation="vertical">
 
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/TextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:text="@string/mes_company" />
+
+
         <TextView
             android:id="@+id/tvInfo"
             android:layout_width="match_parent"
@@ -22,13 +33,13 @@
             android:gravity="center"
             android:textSize="@dimen/font_size_large"
             android:visibility="gone"
-            tools:text="Text info fo messages and status"/>
+            tools:text="Text info fo messages and status" />
 
         <Button
             android:id="@+id/btnSignIn"
             style="@style/ButtonBlue"
             android:text="@string/hint_signin"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btnSignOut"

@@ -20,12 +20,12 @@
     <dimen name="font_size_small">12sp</dimen>
     <dimen name="font_size_middle">16sp</dimen>
     <dimen name="font_size_large">20sp</dimen>
+    <dimen name="font_size_title">25sp</dimen>
 
     <dimen name="floating_button_layout_margin">8dp</dimen>
 
     <!-- CUSTOM TOAST FOR INPUT CALL -->
     <dimen name="ava_input_call_size">75dp</dimen>
-
 
     <dimen name="button_radius">2dp</dimen>
 

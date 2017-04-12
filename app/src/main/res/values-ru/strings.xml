@@ -25,7 +25,7 @@
     <string name="mes_company">ООО ФФ \"Ваше Здоровье\"</string>
     <string name="mes_error_auth">Ошибка аутентификации. Попробуйте еще раз</string>
     <string name="mes_hello">Добрый день</string>
-    <string name="mes_help">Вы сможете зайти только после того как администратору сообщите свой емейл</string>
+    <string name="mes_help">Вы сможете зайти в программу только после того как сообщите администратору свой емейл</string>
     <string name="mes_no_internet">Нет соединения с интернетом</string>
     <string name="mes_no_records">Нет записей</string>
     <string name="mes_register_admin_account">Учетная запись администратора не указана!</string>
@@ -43,4 +43,8 @@
     <string name="mes_email_incorrect">Не правильно указано значение EMAIL</string>
     <string name="action_settings">Открыть настройки</string>
     <string name="mes_permission_call_not_granded">Нет прав для доступа к звонкам</string>
+    <string name="mes_empty">Ничего не найдено</string>
+    <string name="hint_send_email">Отправить email</string>
+    <string name="email_add_user_body">Пожалуйста добавьте мой email в белый список пользователей компании. Ниже мое имя и должность в компании.</string>
+    <string name="email_add_user_theme">Запрос от нового пользователя</string>
 </resources>

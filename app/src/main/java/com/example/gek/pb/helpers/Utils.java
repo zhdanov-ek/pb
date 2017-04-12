@@ -11,8 +11,8 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.gek.pb.R;
 import com.example.gek.pb.activity.SignInActivity;
@@ -21,10 +21,8 @@ import com.example.gek.pb.data.Contact;
 import com.example.gek.pb.data.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -74,14 +72,35 @@ public class Utils {
         alert.show();
     }
 
-    public static void showHelp(Context ctx){
+    public static void showHelp(final Context ctx){
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         String message = ctx.getResources().getString(R.string.mes_help);
         builder.setTitle(R.string.app_name)
                 .setMessage(message)
                 .setIcon(R.drawable.ic_help)
                 .setCancelable(true)
-                .setNegativeButton("OK",
+                .setPositiveButton(R.string.hint_send_email,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    Intent emailIntent = new Intent(Intent.ACTION_VIEW);
+                                    // Указваем все необходимые данные для написания письма
+                                    Uri data = Uri.parse("mailto:?subject=" +
+                                            ctx.getResources().getString(R.string.email_add_user_theme)
+                                            + "&body=" + ctx.getResources().getString(R.string.mes_hello)
+                                            + ",\n  " + ctx.getResources().getString(R.string.email_add_user_body)
+                                            + "&to=" + ctx.getResources().getString(R.string.admin_email));
+                                    emailIntent.setData(data);
+                                    ctx.startActivity(emailIntent);
+                                } catch (Exception e) {
+                                    Toast.makeText(ctx, "Your mail has failed...",
+                                            Toast.LENGTH_LONG).show();
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                .setNegativeButton(R.string.hint_cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();

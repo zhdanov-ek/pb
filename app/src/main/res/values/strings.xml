@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Ваше Здоровье</string>
+    <string name="admin_email" translatable="false">admin@vzpharm.com.ua</string>
 
     <string name="hint_name">Name</string>
     <string name="hint_position">Position</string>
@@ -11,6 +12,7 @@
     <string name="hint_signin">Sign In</string>
     <string name="hint_restore">RESTORE</string>
     <string name="hint_description">Description</string>
+    <string name="hint_send_email">Send email</string>
 
     <string name="menu_add_contact">Add contact</string>
     <string name="menu_edit_contact">Edit contact</string>
@@ -37,6 +39,7 @@
     <string name="mes_succes_auth">Authentication successful</string>
     <string name="mes_error_auth">Error authentication. Try again</string>
     <string name="mes_company">Vashe Zdorovie</string>
+    <string name="mes_empty">Not found</string>
     <string name="about_user">Current user</string>
     <string name="mes_help">You can sign in only after administrator add your email in white list of users.\n
         Please send your email account  to system administrator of you company.</string>
@@ -46,7 +49,11 @@
     <string name="mes_user_added">User %1$s added</string>
     <string name="mes_email_incorrect">Value EMAIL is incorrect</string>
     <string name="mes_permission_call_not_granded">Permission for call not granded</string>
-    
+
+    <string name="email_add_user_body">Please add my email to white list of user of company.
+        Below my name and position in company</string>
+    <string name="email_add_user_theme">Request from new user</string>
+
     <string name="pref_detect_calls">Detect incoming calls</string>
 
     <string name="action_settings">Open settings</string>

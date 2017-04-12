@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gek.pb.R;
@@ -42,6 +43,7 @@ public class UsersActivity extends AppCompatActivity {
     private ArrayList<User> users, searchUsers;
     private ArrayList<String> emails;
     private RecyclerView rv;
+    private TextView tvEmpty;
     private UsersAdapter usersAdapter;
     private Context ctx = this;
     private ValueEventListener contactCardListener;
@@ -55,6 +57,7 @@ public class UsersActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
 
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
         rv = (RecyclerView) findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL ));
@@ -131,8 +134,16 @@ public class UsersActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchUsers = Utils.searchUsers(users, newText);
-                usersAdapter = new UsersAdapter(ctx, searchUsers, getSupportFragmentManager());
-                rv.setAdapter(usersAdapter);
+                if (searchUsers.size() > 0) {
+                    rv.setVisibility(View.VISIBLE);
+                    tvEmpty.setVisibility(View.GONE);
+                    usersAdapter = new UsersAdapter(ctx, searchUsers, getSupportFragmentManager());
+                    rv.setAdapter(usersAdapter);
+                } else {
+                    rv.setVisibility(View.GONE);
+                    tvEmpty.setVisibility(View.VISIBLE);
+                }
+
                 return false;
             }
         });

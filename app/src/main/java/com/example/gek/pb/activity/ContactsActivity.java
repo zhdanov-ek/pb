@@ -13,12 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gek.pb.R;
 import com.example.gek.pb.data.Const;
 import com.example.gek.pb.data.Contact;
 import com.example.gek.pb.data.ContactsAdapter;
+import com.example.gek.pb.data.UsersAdapter;
 import com.example.gek.pb.helpers.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +34,7 @@ public class ContactsActivity extends AppCompatActivity {
     private ArrayList<Contact> contacts;
     private ArrayList<Contact> searchContacts;
     private RecyclerView rv;
+    private TextView tvEmpty;
     private ContactsAdapter contactsAdapter;
     private ValueEventListener contactCardListener;
     private Context ctx = this;
@@ -42,6 +46,8 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(myToolbar);
+
+        tvEmpty = (TextView) findViewById(R.id.tvEmpty);
 
         // Задаем стандартный менеджер макетов для RV
         rv = (RecyclerView) findViewById(R.id.rv);
@@ -137,8 +143,16 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchContacts = Utils.searchContacts(contacts, newText);
-                contactsAdapter = new ContactsAdapter(ctx, searchContacts);
-                rv.setAdapter(contactsAdapter);
+                if (searchContacts.size() > 0) {
+                    rv.setVisibility(View.VISIBLE);
+                    tvEmpty.setVisibility(View.GONE);
+                    contactsAdapter = new ContactsAdapter(ctx, searchContacts);
+                    rv.setAdapter(contactsAdapter);
+                } else {
+                    rv.setVisibility(View.GONE);
+                    tvEmpty.setVisibility(View.VISIBLE);
+                }
+
                 return false;
             }
         });

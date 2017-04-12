@@ -43,4 +43,8 @@
     <string name="mes_email_incorrect">Не вірно вказано значення EMAIL</string>
     <string name="action_settings">Відкрити налаштування</string>
     <string name="mes_permission_call_not_granded">Немає дозволу для роботи з дзвінками</string>
+    <string name="mes_empty">Нічого не знайдено</string>
+    <string name="hint_send_email">Відправити email</string>
+    <string name="email_add_user_body">Прошу додати мій email до списку користувачів компанії. Далі вказано мое им\'я та посада у компанії.</string>
+    <string name="email_add_user_theme">Запит від нового користувача</string>
 </resources>

@@ -60,4 +60,19 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+
+    <style name="TextLarge">
+        <item name="android:textSize">@dimen/font_size_large</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextTitle">
+        <item name="android:textSize">@dimen/font_size_title</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:color">@color/colorPrimaryDark</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">50dp</item>
+    </style>
+
+
 </resources>
